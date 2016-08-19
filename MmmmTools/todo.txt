@@ -1,8 +1,6 @@
-
+- makes hotkey for toggling show shapes in hypergraph hierarchy
 - add random ratio selection proper ui
-- eliminate goz stuff except for when it's actually called upon
-  (essentially make it do a call, and in worst case a manual install
-   from c:/users/public)
+
    
 
 
