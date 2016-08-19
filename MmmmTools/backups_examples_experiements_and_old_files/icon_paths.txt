@@ -1,0 +1,14 @@
+import pymel.all as pm
+import os
+
+icons_location_pather = mmmmTools.platformManager.info.mmmm.mmmm_pather + 'icons'
+icon_b = icons_location_pather + 'testicon.png'
+
+
+win = pm.window('test')
+
+with win:
+    col = pm.columnLayout()
+    with col:
+        button = pm.iconTextButton(width=400,style='iconAndTextHorizontal',  label='This is a button' ,image=icon_b)
+win.show()

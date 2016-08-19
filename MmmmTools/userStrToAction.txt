@@ -1,0 +1,56 @@
+import pymel.all as pm
+import maya.OpenMaya as OpenMaya
+## When pymel evals this,
+##   it gets back a list of strings
+rtcmds =  pm.mel.eval("runTimeCommand -q -ca;")
+
+def userStrToAction():   
+    cmdsFound = []
+    
+    userStr = raw_input()
+    
+    searchStr = userStr.replace( " ", "" )
+    
+    for cmdStr in rtcmds:
+        if cmdStr.startswith(searchStr):
+            cmdsFound.append( cmdStr )
+    
+    cmdsFound.sort()
+    
+    ## If nothing entered, bail
+    if userStr == "":
+        tmp=0  ## do nothing here
+        
+    ## If we have an exact match, run it    
+    elif userStr in cmdsFound:
+        pm.mel.eval( searchStr )
+    
+    ## If it ends in a semicolon, then run it as a mel command
+    elif userStr.endswith( ";" ):
+        pm.mel.eval( searchStr )
+    
+    ## If it ends in a space, then run the first thing we find that start
+    elif userStr.endswith( " " ):
+        print userStr[:-1]
+        print "fuck"
+        for cmdToTest in cmdsFound:
+            print "command: " + cmdToTest
+            if cmdToTest.startswith( userStr[:-1] ):
+                print( cmdToTest )
+                pm.mel.eval( cmdToTest )
+                break  ## We only want to run one command!
+                
+    ## If there's only one command that matches, then run it         
+    elif len(cmdsFound)==1:
+        pm.mel.eval( cmdsFound[0] )
+    
+    ##  If none of these thngs are found, then run another thing entirely    
+    else:
+        print(  cmdsFound )
+        tmp = ""
+        for cmd in cmdsFound[:4]:
+            tmp = tmp + " " + cmd
+        OpenMaya.MGlobal.displayInfo( tmp )
+        userStrToAction()
+        
+userStrToAction()

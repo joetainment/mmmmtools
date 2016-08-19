@@ -1,0 +1,188 @@
+## MmmmTools   -  Usability Improvements For Maya
+## Copyright (C) <2008>  Joseph Crawford
+##
+## This file is part of MmmmTools.
+##
+## MmmmTools is free software: you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation, either version 3 of the License, or
+## (at your option) any later version.
+##
+## MmmmTools is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with this program.  If not, see <http://www.gnu.org/licenses/>.
+##
+################################################
+## More information is available:
+## MmmmTools website - http://celestinestudios.com/mmmmtools
+################################################
+"""
+Hotstrings module.
+
+This is a module that accepts very short commands, and which then
+runs various Maya and MmmmTools commands upon reveiving a short command
+
+eg command: l
+lower case L, could trigger then maya command to create a light
+
+eg command: c
+Can trigger the creation of a cube by running the polyCube command.
+
+Basically, hotstrings is just a way to stack *way* more hotkeys onto the
+keyboard.  A lot of short hotstrings can be entered faster than the user
+could click on the equivilant commands in the menus.
+"""
+            ##   OLD OUTDATED COMMENTS, CAN SOON BE REMOVED
+            ## Joe Crawford's Hotstring Script
+            ## (Joe can be found at http://www.celestinestudios.com)
+            ## run this and then use a hotkey
+            ## (probably backslash because its right by enter) to run:
+            ##                 python(  "app = Hotstrings()" );
+
+#import maya
+#import maya.cmds as cmds
+import pymel.all as pm
+
+
+from Utils import Utils
+
+
+u = Utils
+
+
+## Try to load the Hotstring actions from another file.
+## try backup on failure, and make default simple
+## action if backup file fails.
+try:
+    import HotstringsActions
+except:
+    u.log( "HotstringsActions file could not be loaded.  "
+            "Most like because of an error in the file.  "
+            "Loading backup instead."
+          )
+    try:
+        import BackupHotstringsActions as HotstringsActions
+    except:
+        u.log( "Backup of HotstringsActions could "
+               "not be loaded. No actions will be "
+               "available for Hotstrings."
+             )
+        HotstringsActions = object()
+        HotstringsActions.actions = {'default':"""   print "No actions are available";  """}
+
+        
+
+class HotstringsUi(object):
+    def __init__(self, parent):
+        self.parent = parent
+        self.ini = parent.ini
+        
+        self.test = "default"
+        self.result = "none"
+        self.windowName = "Hotstrings For Maya"
+        
+        
+    def getUserInput(self):
+        self.result = pm.promptDialog(
+            title=self.windowName,
+            message='Enter Hotstring:',
+            button=['OK', 'Cancel'],
+            defaultButton='OK',
+            cancelButton='Cancel',
+            dismissString='')
+
+        self.parent.text = 'help'
+            
+        if self.result == 'OK':
+            self.parent.text = pm.promptDialog(query=True, text=True)
+
+        self.parent.doAction()        
+        
+
+class Hotstrings(object):
+
+    #add extra variables here
+
+
+        
+    def __init__(self, parent, make_ui=True):
+        self.parent = parent
+        self.ini = parent.ini
+        self.loadActions()
+        
+        self.text = 'help'
+        
+        if make_ui:
+            self.ui = HotstringsUi(self)
+            
+    
+    def go(self):
+        self.ui.getUserInput()
+            
+            
+    def doAction(self, cmd=None):        
+        ## If a spefic command was given use it, otherwise, use self.text to
+        ##  get the action.
+        if not cmd is None:
+            self.text=cmd
+
+        ## Make sure its possible to get from the dictionary,
+        ## otherwise make the command None
+        try:
+            command = self.actions[self.text]
+        except:
+            command = False
+        
+        ## Determine the type of command, and if it is a string, try to run it.
+        ## show errors if it can't be run.
+        if command is None:
+            u.log("Please Type a command in the window. Example:  c   ")
+        else:
+            if isinstance(command, str) or isinstance(command, unicode):
+                if isinstance(command, unicode):
+                    command = str(command)
+                ## The next commented lines are placeholders for
+                ## functionality to run specific hardcoded functions
+                ## or commands
+                #if self.text == 'hard coded command example fdsaf':
+                #    print("Hardcoded command run")
+                ## The if False is here as a placeholder also.
+                if False:
+                    pass
+                elif self.text == "":
+                    u.log("Please Type a command in the window. Example:  c  ")
+                else:
+                    try:
+                        pm.mel.eval(command)
+                    except:
+                        u.log( "Hotstring command could not be evaluated." )
+            else:
+                u.log( "Hotstring command was not a string, so it could not "
+                       "be evaluated." )
+
+    
+    def help(self):
+        u.log("\nAvailable Hotstrings Commands:  \n")
+        self.printActions()
+        u.log("A list of hotstrings commands is shown above.")
+        u.log("To use hotstrings, type the backslash key,")
+        u.log("then type a command in the hotstrings window and press enter.")
+        u.log("For example, push backslash, then in the window")
+        u.log("that appears type:    c      and then press enter \n")
+    
+    def printActions(self):
+        keys = self.actions.keys()
+        for k in keys:
+            u.log( "\n\n\n Command:  " + k )
+            u.log(self.actions[k])
+        u.log("\n")
+            
+    def loadActions(self):
+        self.actions = HotstringsActions.actions
+                    
+### End of Hotstrings Class ###    
+

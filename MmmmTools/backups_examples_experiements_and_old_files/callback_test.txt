@@ -1,0 +1,35 @@
+import maya.OpenMaya as om
+
+
+
+class CallbackManager(object):
+    def __init__(self, parentRef ):
+        self.parent = parentRef
+        self.mmmm = self.parent
+        self.tickTime = 2.0
+        self.callbacks = {}
+        //self.static_callbacks.append( self )
+        self.id = om.MTimerMessage.addTimerCallback( self.tickTime, self.onTimerTick, {} )
+    def
+
+
+class Callback(object):
+
+    staticIdsToCallbacks = {}    
+
+    #def    
+
+    def __init__(self, ):
+        self.id = 
+        
+def onTimerTick(data1,data2,data3):
+    print( "Testing timer tick" )
+    print( "data given was:" )
+    print( data1 )
+    print( data2 )
+    print( data3 )
+    print( "Completed timer tick." )
+
+    
+id = om.MTimerMessage.addTimerCallback( 2.0, onTimerTick, {} )
+

@@ -1,0 +1,16 @@
+import pymel.all as pm
+for obj in pm.ls(type='camera'):
+  try:
+    obj.ncp.set( 1 )
+    obj.fcp.set( 500000 )
+    name = obj.name()
+    if name.startswith('sideShape'):
+        obj.getParent().translateX.set( 200000 )
+    if name.startswith('topShape'):
+        obj.getParent().translateY.set( 200000 )
+    if name.startswith('frontShape'):
+        obj.getParent().translateZ.set( 200000 )
+  except:
+    print("Error setting camera attribute, continuing anyway...")
+    
+pass  ##This must be the last line

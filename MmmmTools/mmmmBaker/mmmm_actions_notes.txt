@@ -1,0 +1,28 @@
+open at least one openexr, and choose  "as alpha"  when it asks if you should use as transparency or alpha
+
+
+Make a new image at the size you need, must be a 32bit per channel (128 bits per pixel) image, if it should work with open exr
+
+
+
+in the actions window, import the action, then click on the action (not just the folder that has the actions)
+
+
+
+File > Automate > Batch
+
+
+
+Overide action open commands is probably already checked, if not, check/enable it!
+
+pick the folder where all the maps are to be combined
+
+
+click ok to run the action
+
+
+
+if it gives a no pixels selected warning, click don't show again, and then ok or continue
+
+
+push spacebar if it ever pauses and says continue/stop  (pushing spacebar will continue)

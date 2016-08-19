@@ -1,0 +1,23 @@
+import pymel.all as pm  ## tells python how to talk to Maya
+
+## Get a list of the selected objects in maya
+sel = pm.ls(selection=True)
+    ## in mel:   ls -sl
+
+## Get the last object selected by
+## popping it out of the list
+target = sel.pop(-1)
+
+for obj in sel:
+    obj.rename(  'UCX_' + target.name() + '_00'  )  ## rename based on the target's name
+    pm.parent( obj, target ) ## parent this object to the target
+
+
+## Freeze transforms    
+pm.makeIdentity( target, apply=True  )
+## Select target and all its children
+pm.select( target, hierarchy=True )
+## Delete history
+pm.delete( constructionHistory=True )
+
+

@@ -1,0 +1,93 @@
+init  old code fragments
+
+
+        
+        #Load the Downloader, this should happen before the other ones
+        try:
+            self.downloader = Downloader.Downloader(self)
+        except:
+            u.log("MmmmTools Downloader module failed")
+        
+        ## Load plugins that are specified in ini file
+        ##  The particular plugins are hardcoded, this isn't a
+        ##  general feature, it's very specific to the couple
+        ##  of plugins that cause irritation to many many users.
+        ##  namely, the objexport plugin and the mayatomr plugin.
+        self.loadPluginsByIni()
+
+
+        ##Load all the different parts.  Note, we need to run them later.  
+        
+        try:
+            self.rimLight = RimLight.RimLight(self)
+        except:
+            print("MmmmTools rim light module failed")
+            print( traceback.format_exc() )
+        try:
+            self.hotkeys = Hotkeys.Hotkeys(self)
+        except:
+            print("MmmmTools Hotkeys module failed")
+            print( traceback.format_exc() )
+        
+        try:
+            self.hotstrings = Hotstrings.Hotstrings(self)
+        except:
+            u.log("MmmmTools Hotstrings module failed to instantiate.")
+            
+        
+        try:
+            self.rigger = Rigger.Rigger(self)
+        except:
+            print("MmmmTools Rigger module failed")
+            print( traceback.format_exc() )
+        try:
+            self.modeler = Modeler.Modeler(self)
+        except:
+            print("MmmmTools Modeler module failed")
+            print( traceback.format_exc() )
+        try:
+            self.texturer = Texturer.Texturer(self)
+        except:
+            print("MmmmTools Texturer module failed")
+            print( traceback.format_exc() )
+        try:
+            self.renderer = Renderer.Renderer(self)
+        except:
+            print("MmmmTools Renderer module failed")
+            print( traceback.format_exc() )
+            
+        try:
+            self.hotboxToggler = HotBoxToggler.HotBoxToggler(self)
+        except:
+            print("MmmmTools HotBoxToggler module failed")
+            print( traceback.format_exc() )
+            
+        try:
+            self.capsDisabler = CapsDisabler.CapsDisabler( self  )
+        except:
+            print("MmmmTools Caps Disabler module failed")
+            print( traceback.format_exc() )            
+        
+        
+        
+        ##Loads parts that don't need parent refs
+        try:
+            self.selectTextureBorderEdges = SelectTextureBorderEdges.SelectTextureBorderEdges()
+        except:
+            print("MmmmTools Select Texture Border Edges module failed")
+            print( traceback.format_exc() )
+        try:
+            self.fileTextureReloader = FileTextureReloader.FileTextureReloader()
+        except:
+            print("MmmmTools Texture Reloader module failed")
+            print( traceback.format_exc() )
+        
+        try:
+            self.autosaveEnabler = AutosaveEnabler.AutosaveEnabler();
+        except:
+            print("MmmmTools Texture Reloader module failed")
+            print( traceback.format_exc() )
+
+            
+        
+        

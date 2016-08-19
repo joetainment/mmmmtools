@@ -1,0 +1,47 @@
+Make a copy of the ies file for each light
+that you want different "spotlight" settings for.
+
+Load those files onto VRay IES lights.
+
+Note that you can change the light source
+size and shape.  It's not really worth adjusting
+the size and shape in the IES file itself.
+You can use the VRay light shape settings to
+do that.
+
+Make sure you turn on "soft shadows" for the IES
+light, otherwise it will act like an infinitely
+small point light.
+
+To change the spread and pattern in the file,
+edit the lines that contain the numbers.
+The last line with a row of numbers in it is
+the intensities.
+
+If you go up two lines, you can find the angles
+that are used for those intensities.
+
+Thus, if intensities is line 7, then angles is line 5.
+This is the case in the adjustable starter file.
+
+You can edit the pairs.  Don't change the angles
+at 0 or 90 degrees, and I recommend that 90 is
+0.0 (80 being 0.0 can help too.
+
+In my tests, I did not have to refresh the file in Maya
+for VRay to pick up the changes.  As soon as I edited
+the test file and saved it, the changes were picked up right away.
+
+
+
+In the line that looks like this:
+1 -1 1 6 1 1 2 -0.045 -0.045 0
+
+If you want to change the number of pairs
+of angle/intensity, change the fourth number
+("6" in the above example) to the number
+of pairs you are using.
+
+Make sure that you actually have that many pairs.
+
+

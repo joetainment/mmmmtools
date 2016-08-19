@@ -1,0 +1,16 @@
+FileTextureManager is used by by MmmmTools with
+permission under the MIT license
+as per its author's intentions, which are
+shown on it's primary distribution
+page:
+
+http://www.creativecrash.com/maya/script/filetexturemanager
+The original author is Crow Yeh.
+
+The page states:
+"""
+All conditions of the MIT license
+(http://www.opensource.org/licenses/mit-license.html)
+apply to this file.
+"""
+

@@ -1,0 +1,524 @@
+#any_app generic 
+#
+# this is the modules init file
+
+
+## Eventually it is intended that this project will be released under GPL,
+## dual licensed either v2 or v3 at the users options
+## GPL text should eventually go here
+
+#import Tkinter as Tk
+import PySide.QtGui as QtGui
+import PySide.QtCore as QtCore
+import time as Time
+import threading as Threading
+import traceback as Traceback
+import sys as Sys
+import subprocess as Subprocess
+import os as Os
+#import inspect as Inspect
+import traceback as Traceback
+
+from utils import Utils
+##setattr( Tk.Text, 'getText', Tk_extention__getText )
+from object_base import Object_base
+
+#import .. any_app_base        
+    
+
+class Any_app_base(Object_base):
+    def __init__(self, *args, **kargs):
+        #print( 'Any_app_base __init__ running!!!' )        
+        kargs = self.set_kargs_defaults( kargs, [
+            [ 'ui',True ],
+            [ 'print_to_console',True ],
+            [ 'print_to_console_even_with_ui',False ],
+            [ 'init_bases',True ],
+        ]) 
+        if self.opts['debug'] == True: print( kargs['ui'] )
+        self.opts_merge( kargs )
+        self.init_bases( self )
+        self.init_env()
+        
+
+        
+        if self.opts['ui']==True:
+            self.init_ui_base()
+      
+        
+    def get_karg( self, karg, kargs ):
+        if karg in kargs:
+            return kargs[karg]
+        else:
+            return None
+    def get_attr( self, attr ):
+        try:
+            return getattr( self, attr )
+        except:
+            return None
+        
+
+    def deleteme(self):
+        s.init_env()
+        s.dynamic_classes = {}
+        s.output( "##Output" )
+        
+        #self.opt_check( 'ui', on_true=self.init_ui )
+    
+    def go(self):
+        if self.opts.get('ui', False):
+            self.go_ui()
+        else:
+            self.go_no_ui()
+
+    def go_no_ui(self):
+        ## This should run even when debugging is off, so it just uses print
+        print( "This app does nothing useful when ui is not enabled." )
+    
+    def go_ui(self):
+        #print( 'go_ui is running!' )
+        try:
+            self.ui.go()
+        except:
+            ## This should run even when debugging is off, so it just uses print
+            print( "No GUI available. This app does nothing useful when ui is not enabled." )
+        
+    
+    def init_ui_base(self,  *args, **kargs):
+        #### This should probably by overwritten by the using class
+        self.init_ui()
+            
+    def init_ui(self, *args, **kargs):
+            make_default_ui = self.opts.get( 'make_default_ui', False )
+            try:
+                self.ui
+            except:
+                self.ui = Any_app_base_ui( self, *args, **self.opts )
+            
+            
+    
+    def init_opts(  self ):
+        pass
+    
+        
+
+        
+    def opt_check(self, opt, on_true=None, on_false=None, default_value=None):
+        s = self
+        o = str(opt)
+        if o in s.opts:
+            ov = s.opts[o]
+            if ov:
+                if on_true!=None:
+                    on_true.call()
+            else:
+                if on_false!=None:
+                    on_false.call()
+        else:
+            if default_value:
+                s.opts[o] = default_value
+    def opt_get(self, opt):
+        s = self
+        o = str(opt)
+        if o in s.opts:
+            return o
+        else:
+            return None
+
+        
+        
+    def output(self, out):
+        try:
+            self.ui.output( out )
+            #### The next lines aren't working...  **** Fix this ****
+            #if opt.get('print_to_console_even_with_ui'):
+            #    print(out)
+        except:
+            if self.opts.get('print_to_console'):
+                #print(out)
+                pass
+       
+    def make_class(self, class_name, base_classes=(object,), methods_and_members=dict()  ):
+        x = type( str(class_name), base_classes, methods_and_members )
+        self.dynamic_classes[class_name] = x
+        return x
+        
+        
+     
+
+            
+class Any_app_base_ui(Object_base):
+    def __init__(self, parentRef, make_default_ui=False, *args, **kargs):
+        s = self
+        s.parentRef = parentRef
+        s.init_env()
+        s.qapp = QtGui.QApplication(Sys.argv)
+        s.widgets = { }
+        s.init_widgets( )
+        if make_default_ui==True:
+            self.make_default_ui()
+        
+    def make_default_ui(self, window_title=None, form_title='', *args, **kargs ):
+        if window_title==None: window_title = str( self.running_script__file_name_no_path )  #self.running_script__file_name_with_path
+    
+        w = self.widgets
+        
+        dialog = w['dialog'] = QtGui.QDialog()
+        
+        formGroupBox = w['formGroupBox'] = QtGui.QGroupBox("")
+        formLayout = w['formLayout'] = QtGui.QFormLayout()
+        
+        #srcLabel = w['srcLabel'] = QtGui.QLabel("Source:")
+        #srcLineEdit = w['srcLineEdit'] = QtGui.QLineEdit()
+        #destLabel = w['destLabel'] = QtGui.QLabel("Destination:")
+        #destLineEdit = w['destLineEdit'] = QtGui.QLineEdit()
+        #optsLabel = w['optsLabel'] = QtGui.QLabel("Additional Options:")
+        #optsLineEdit = w['optsLineEdit'] = QtGui.QLineEdit()
+        
+        #formLayout.addRow(srcLabel, srcLineEdit )
+        #formLayout.addRow(destLabel, destLineEdit )
+        #formLayout.addRow(optsLabel, optsLineEdit )
+        
+        formGroupBox.setLayout(formLayout)
+        
+        mainLayout = w['mainLayout'] = QtGui.QVBoxLayout()
+        #mainLayout.setMenuBar(self.menuBar)
+        mainLayout.addWidget(formGroupBox)
+        
+        #mainLayout.addWidget(buttonBox)
+        #mainLayout.addWidget(editorLable)
+        #mainLayout.addWidget(editor)
+        #mainLayout.addWidget(outputLable)
+        #mainLayout.addWidget(output)        
+        
+        dialog.setLayout(mainLayout)
+        dialog.setWindowTitle( window_title )
+        dialog.show()
+        
+    def output(self, *args, **kargs ):
+        #try:
+            out = self.widgets['outputTextEdit']
+            scroll = out.verticalScrollBar()
+            for v in args:
+                out.setPlainText( out.toPlainText() + str(v) + '\n'  )    
+                scroll.setValue( scroll.maximum()  )
+                
+        #except:
+        #    for v in args:
+        #        #print( v )
+        #        pass
+
+    def init_widgets(self, *args, **kargs):
+        ## Override this function to make your own ui
+        #w = self.widgets
+        #dialog = w['dialog'] = QtGui.QDialog()
+        #for k,v in w.items():
+        #    v.
+        pass
+        
+    def go(self, *args, **kargs):
+        self.qapp.exec_()
+
+        
+
+class Any_app_base_example(Any_app_base):
+    def __init__(self, *args, **kargs):
+        self.init_bases(self, *args, **kargs )
+        c = "Any_app_base_example Init"
+        self.debug( c + "   " + "self type:" + str(type(self))  )
+              
+class Any_app_base_example2a(Any_app_base_example):
+    def __init__(self, *args, **kargs ):
+        self.init_bases(self, *args, **kargs )
+        c = "Any_app_base_example2a Init  :)  "
+        self.debug( c + "   " + "self type:" + str(type(self))  )        
+           
+class Any_app_base_example2b(Any_app_base_example):
+    def __init__(self, *args, **kargs ):
+        self.init_bases(self, *args, **kargs )
+        c = "Any_app_base_example2b Init  :)  "
+        self.debug( c + "   " + "self type:" + str(type(self))  ) 
+
+class Any_app_base_example3a(Any_app_base_example2a, Any_app_base_example2b):
+    def __init__(self, *args, **kargs ):
+        self.init_bases(self, *args, **kargs )
+        c = "Any_app_base_example3a Init  :)  "
+        self.debug( c + "   " + "self type:" + str(type(self))  )
+        
+class Any_app_base_example3b(Any_app_base_example2a, Any_app_base_example2b):
+    def __init__(self, *args, **kargs ):
+        self.init_bases(self, *args, **kargs )
+        c = "Any_app_base_example3b Init  :)  "
+        self.debug( c + "   " + "self type:" + str(type(self))  )
+                
+class Any_app_base_example4(Any_app_base_example3b, Any_app_base):
+    def __init__(self, *args, **kargs ):
+        self.init_bases(self, *args, **kargs )
+        c = "Any_app_base_example4 Init  :)  "
+        self.debug( c + "   " + "self type:" + str(type(self))  )
+        
+class Any_app_base_example5(Any_app_base_example3a, Any_app_base_example4):
+    def __init__(self, *args, **kargs ):
+        self.init_bases(self, *args, **kargs )
+        c = "Any_app_base_example5 Init  :)  "
+        self.debug( c + "   " + "self type:" + str(type(self))  )
+
+           
+        #self.mro = list(self.mro)
+        #self.mro.reverse()    
+        #### Clean up mro ####
+        ## Get rid of object class if it is in mro
+        #if type(object)==type(self.mro[0]):
+        #    self.mro.pop(0)
+        ## Get rid of our own class if it is in the list
+        #if type(self.__class__)==type(self.mro[-1]):
+        #    self.mro.pop(-1)
+        #print( "\n\n\n")
+        #print( "Self.mro[0] is:" )
+        #print( self.mro[0] )
+        #super( self.mro[0], self).__init__( *args, **kargs )
+        #c = "Any_app_example2 Init"
+        ##self.init_bases( kargs, self2=self, caller=c ) ## (opts, **kargs)
+
+        
+        
+        
+        
+        
+
+
+
+def main( ui=True ):
+    app = Any_app_example5( )
+    app.go()
+    
+if __name__ == "__main__":
+    main()
+
+def notes_as_strings():
+    pass
+    """                    
+    def runCode(self):
+        #print('running')
+        #o1 = self.textb2.get(1.0, Tk.END)
+        o1 = self.ui.textb2.getText()
+        o2 = self.ui.textb3.getText()
+        try:
+            #print( help(self.textb1)  )
+            #print( o1  )
+            #print( o2  )
+            code = str(  self.ui.textb1.getText()  )  ## why do they use 1.0 ???
+            exec code in locals(), globals()
+        except:
+            self.output( Traceback.format_exc() )
+        
+    def runRsync(self):
+        try:
+            self.runRsyncPhase2()
+        except:
+            out = Traceback.format_exc()
+            out += "\nAn error occurred when performing the rsync operation.\n"
+            out += "Please check your paths and try again."            
+            self.output( out )
+            
+        
+    def runRsyncPhase2(self):
+        print Os.getcwd()
+        
+        
+        prog = "rsync.exe"
+        prog = prog.replace('/', '\\')        
+        opts = "-rv --fake-super --modify-window 3 --no-group"
+        
+        cyg = '/cygdrive/'
+        
+        
+        ## Get the src and dest from the filters
+        src = self.ui.textb2.getText().replace('\\', '/')
+        dest = self.ui.textb3.getText().replace('\\', '/')
+        
+        ## Get rid of anything after a newline character        
+        src = src.partition('\n')[0]
+        dest = dest.partition('\n')[0]        
+                
+        ##Get rid of the drive colons
+        if ':' in src:
+            src = src.replace(':', '')
+            if len(src):
+                while src[0] == '/':
+                    src = src[1:]
+            src = cyg+src ## Put a cygdrive on front            
+        else:
+            assert src[0:2]=='//'
+            
+        if ':' in dest:
+            dest=dest.replace(':', '')
+            if len(dest):
+                while dest[0] == '/':
+                    dest = dest[1:]
+            dest = cyg+dest ## Put a cygdrive on front
+        else:
+            assert dest[0:2]=='//'
+        
+        
+        ##Add trailing slashes for folders
+        if src[-1] != '/':
+            src = src+'/'
+        if dest[-1] != '/':
+            dest = dest+'/' 
+
+        ## Surround src and dest with quotes
+        src = '"' + src + '"'
+        dest = '"' + dest + '"'
+        
+        p=' '
+        
+        cmd = prog + p + opts + p + src + p + dest
+        print( prog )
+        print(src)
+        print(dest) 
+        print( cmd )
+          
+
+        Os.chdir( self.parentRef.running_script__file_path_only )        
+        self.parentRef.running_script__file_path_only
+        
+        
+        r = Subprocess.call( cmd, shell=True )
+        
+        out = "rsync complete, errors reported are likely just due to lack of POSIX priviledges compatibility"
+        print( out )
+        
+        self.output( out  )
+        
+        pass
+      
+        for i in outer_frames:
+            info = Inspect.getframeinfo(i) ##returns Traceback(filename, lineno, function, code_context, index)
+            print "info is:"
+            print info
+            func_name = info[2]
+            context = info[3]
+            print "\nContext is:"
+            print context
+            print "\nContext type is:"
+            print type(context)
+            #func = info[2] 
+            print "\nFunc is:"
+            print func_name
+
+        #print type(func)
+        #print "\nFunc class is:"
+        #print func['__class__']
+        #print "Dir is:\n"
+        #print dir(func)
+
+        
+        #func = func_code
+        #print( Inspect.stack()[1][3] )
+        
+        #frame = self.__class__.im_class
+        #print( frame )
+        #print(  stack()  )
+        #s = self
+        #s.opts_by_class = {}
+        #s.opts_by_class[ str(self.__class__) ] = kargs   
+    
+    
+
+    u = self.ui
+    x = u.__dict__.keys()
+    for i in x:
+        j = getattr( self.ui, i )
+        try:
+            j['background'] = 'red'
+        except:
+            pass
+
+    self.output( self.ui.button1['background'] )
+    self.ui.button_code['background'] = 'blue'
+      
+
+    print( "example mro")
+    print( self.__class__.__mro__ )
+    print( "example bases")
+    print( self.__class__.__bases__ )
+    print( '\n\n\n' )
+    mro = self.__class__.__mro__
+    bases = self.__class__.__bases__
+
+
+
+    Notes:
+
+    Or, How to use variable length argument lists in Python.
+
+    The special syntax, *args and **kwargs in function definitions is used to pass a variable number of arguments to a function. The single asterisk form (*args) is used to pass a non-keyworded, variable-length argument list, and the double asterisk form is used to pass a keyworded, variable-length argument list. Here is an example of how to use the non-keyworded form. This example passes one formal (positional) argument, and two more variable length arguments.
+
+    def test_var_args(farg, *args):
+        print "formal arg:", farg
+        for arg in args:
+            print "another arg:", arg
+
+    test_var_args(1, "two", 3)
+    Results:
+
+    formal arg: 1
+    another arg: two
+    another arg: 3
+
+    Here is an example of how to use the keyworded form. Again, one formal argument and two keyworded variable arguments are passed.
+
+    def test_var_kwargs(farg, **kwargs):
+        print "formal arg:", farg
+        for key in kwargs:
+            print "another keyword arg: %s: %s" % (key, kwargs[key])
+
+    test_var_kwargs(farg=1, myarg2="two", myarg3=3)
+    Results:
+
+    formal arg: 1
+    another keyword arg: myarg2: two
+    another keyword arg: myarg3: 3
+
+    Using *args and **kwargs when calling a function
+    This special syntax can be used, not only in function definitions, but also when calling a function.
+
+    def test_var_args_call(arg1, arg2, arg3):
+        print "arg1:", arg1
+        print "arg2:", arg2
+        print "arg3:", arg3
+
+    args = ("two", 3)
+    test_var_args_call(1, *args)
+    Results:
+
+    arg1: 1
+    arg2: two
+    arg3: 3
+    Here is an example using the keyworded form when calling a function:
+
+    def test_var_args_call(arg1, arg2, arg3):
+        print "arg1:", arg1
+        print "arg2:", arg2
+        print "arg3:", arg3
+
+    kwargs = {"arg3": 3, "arg2": "two"}
+    test_var_args_call(1, **kwargs)
+    Results:
+
+    arg1: 1
+    arg2: two
+    arg3: 3
+    
+    
+    
+    Relative Imports:    http://docs.python.org/tutorial/modules.html   sec. 6.4.2
+        Starting with Python 2.5, in addition to the implicit relative imports described above, you can write explicit relative imports with the from module import name form of import statement. These explicit relative imports use leading dots to indicate the current and parent packages involved in the relative import. From the surround module for example, you might use:
+
+        from . import echo
+        from .. import formats
+        from ..filters import equalizer    
+    
+
+    """

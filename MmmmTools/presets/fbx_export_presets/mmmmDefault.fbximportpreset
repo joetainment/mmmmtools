@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Import UIH="0" UID="0" UIG="1" UIX="0" UIP="0" lbENU="Import">
+  <PlugInGrp UIH="1" UID="0" UIG="1" UIX="0" UIP="0" lbENU="Plugin Information">
+    <PlugInUIWidth UIH="1" UID="0" UIG="0" lbENU="Plugin UI Width" dt="Integer" v="500"/>
+    <PlugInUIHeight UIH="1" UID="0" UIG="0" lbENU="Plugin UI Height" dt="Integer" v="500"/>
+    <PlugInUIXpos UIH="1" UID="0" UIG="0" lbENU="Plugin UI X Position" dt="Integer" v="100"/>
+    <PlugInUIYpos UIH="1" UID="0" UIG="0" lbENU="Plugin UI Y Position" dt="Integer" v="100"/>
+    <PresetSelected UIH="1" UID="0" UIG="0" lbENU="Preset Selected" dt="KString" v="D:\Dropbox\maya\FBX\Presets\2014.0.1\import\User defined.fbximportpreset"/>
+    <UILIndex UIH="1" UID="0" UIG="0" lbENU="UI language" dt="Enum" enumSelected="ENU" v="0" enumItem_0="ENU" enumItem_1="DEU" enumItem_2="FRA" enumItem_3="JPN" enumItem_4="KOR" enumItem_5="CHS"/>
+    <PluginProductFamily UIH="0" UID="0" UIG="0" lbENU="Plugin product family" dt="KString" v="Maya  ( API cut number: 201303010026-864206 )"/>
+  </PlugInGrp>
+  <PresetsGrp UIH="0" UID="0" UIG="1" UIX="0" UIP="1" lbENU="Presets">
+    <Presets UIH="0" UID="0" UIG="0" lbENU="Current Preset" dt="Presets"/>
+  </PresetsGrp>
+  <StatisticsGrp UIH="0" UID="0" UIG="1" UIX="1" UIP="0" lbENU="Statistics">
+    <Statistics UIH="0" UID="0" UIG="0" lbENU="Statistics" dt="Statistics"/>
+  </StatisticsGrp>
+  <IncludeGrp UIH="0" UID="0" UIG="1" UIX="1" UIP="0" lbENU="Include">
+    <MergeMode UIH="0" UID="0" UIG="0" lbENU="File content" dt="Enum" enumSelected="Add and update animation" v="1" enumItem_0="Add" enumItem_1="Add and update animation" enumItem_2="Update animation"/>
+    <Geometry UIH="0" UID="0" UIG="1" UIX="1" UIP="0" lbENU="Geometry">
+      <UnlockNormals UIH="0" UID="0" UIG="0" UIBG="0" lbENU="Unlock Normals" dt="Bool" v="1"/>
+      <HardEdges UIH="0" UID="0" UIG="0" UIBG="0" lbENU="Combine per-vertex Normals" dt="Bool" v="0"/>
+      <BlindData UIH="1" UID="0" UIG="0" UIBG="0" lbENU="Blind Data" dt="Bool" v="1"/>
+    </Geometry>
+    <Animation UIH="0" UID="0" UIG="0" UIBG="1" UIX="1" lbENU="Animation" dt="Bool" v="1">
+      <ExtraGrp UIH="0" UID="0" UIG="1" UIX="0" UIP="0" lbENU="Extra Options">
+        <Take UIH="0" UID="0" UIG="0" lbENU="Animation Take" dt="Enum" enumSelected="No Animation" v="0" enumItem_0="No Animation"/>
+        <TimeLine UIH="0" UID="0" UIG="0" UIBG="0" lbENU="Fill Timeline" dt="Bool" v="0"/>
+        <BakeAnimationLayers UIH="0" UID="0" UIG="0" UIBG="0" lbENU="Bake Animation Layers" dt="Bool" v="1"/>
+        <Markers UIH="0" UID="0" UIG="0" UIBG="0" lbENU="Optical Markers" dt="Bool" v="0"/>
+        <Quaternion UIH="0" UID="0" UIG="0" lbENU="Quaternion Interpolation Mode" dt="Enum" enumSelected="Resample As Euler Interpolation" v="2" enumItem_0="Retain Quaternion Interpolation" enumItem_1="Set As Euler Interpolation" enumItem_2="Resample As Euler Interpolation"/>
+        <ProtectDrivenKeys UIH="0" UID="0" UIG="0" UIBG="0" lbENU="Protect Driven Keys" dt="Bool" v="0"/>
+        <DeformNullsAsJoints UIH="0" UID="0" UIG="0" UIBG="0" lbENU="Deforming elements to joints" dt="Bool" v="1"/>
+        <NullsToPivot UIH="0" UID="0" UIG="0" UIBG="0" lbENU="Update Pivotsd from Nulls" dt="Bool" v="1"/>
+        <PointCache UIH="0" UID="0" UIG="0" UIBG="0" lbENU="Geometry Cache File(s)" dt="Bool" v="1"/>
+      </ExtraGrp>
+      <Deformation UIH="0" UID="0" UIG="0" UIBG="1" UIX="0" lbENU="Deformations" dt="Bool" v="1">
+        <Skins UIH="0" UID="0" UIG="0" UIBG="0" lbENU="Skins" dt="Bool" v="1"/>
+        <Shape UIH="0" UID="0" UIG="0" UIBG="0" lbENU="Blend Shapes" dt="Bool" v="1"/>
+        <ForceWeightNormalize UIH="0" UID="0" UIG="0" UIBG="0" lbENU="Pre-Normalize Weights" dt="Bool" v="0"/>
+      </Deformation>
+      <CurveFilter UIH="1" UID="0" UIG="0" UIBG="1" UIX="0" lbENU="Curve Filters" dt="Bool" v="0"/>
+      <ConstraintsGrp UIH="0" UID="0" UIG="1" UIX="0" UIP="0" lbENU="Constraints">
+        <Constraint UIH="0" UID="0" UIG="0" UIBG="0" lbENU="Constraints" dt="Bool" v="1"/>
+        <CharacterType UIH="0" UID="0" UIG="0" lbENU="Skeleton Definitions as" dt="Enum" enumSelected="HumanIK" v="2" enumItem_0="None" enumItem_1="FBIK" enumItem_2="HumanIK"/>
+      </ConstraintsGrp>
+    </Animation>
+    <CameraGrp UIH="0" UID="0" UIG="1" UIX="1" UIP="0" lbENU="Cameras">
+      <Camera UIH="0" UID="0" UIG="0" UIBG="0" lbENU="Cameras" dt="Bool" v="1"/>
+    </CameraGrp>
+    <LightGrp UIH="0" UID="0" UIG="1" UIX="1" UIP="0" lbENU="Lights">
+      <Light UIH="0" UID="0" UIG="0" UIBG="0" lbENU="Lights" dt="Bool" v="1"/>
+    </LightGrp>
+  </IncludeGrp>
+  <AdvOptGrp UIH="0" UID="0" UIG="1" UIX="1" UIP="0" lbENU="Advanced Options">
+    <UnitsGrp UIH="0" UID="0" UIG="1" UIX="1" UIP="0" lbENU="Units">
+      <TotalUnitsScale UIH="0" UID="0" UIG="0" lbENU="Total Units Scale" dt="TextLine"/>
+      <DynamicScaleConversion UIH="0" UID="0" UIG="0" UIBG="0" lbENU="Automatic" dt="Bool" v="1"/>
+      <UnitsSelector UIH="0" UID="1" UIG="0" lbENU="File units converted to" dt="Enum" enumSelected="Centimeters" v="1" enumItem_0="Millimeters" enumItem_1="Centimeters" enumItem_2="Decimeters" enumItem_3="Meters" enumItem_4="Kilometers" enumItem_5="Inches" enumItem_6="Feet" enumItem_7="Yards" enumItem_8="Miles"/>
+    </UnitsGrp>
+    <UI UIH="0" UID="0" UIG="1" UIX="1" UIP="0" lbENU="UI">
+      <ShowWarningsManager UIH="0" UID="0" UIG="0" UIBG="0" lbENU="Show Warning Manager" dt="Bool" v="1"/>
+      <GenerateLogData UIH="0" UID="0" UIG="0" UIBG="0" lbENU="Generate Log Data" dt="Bool" v="1"/>
+      <PluginVersionsURL UIH="1" UID="0" UIG="0" lbENU="Plugin Versions URL" dt="KString" v="http://download.autodesk.com/us/fbx/versions/fbxversion.xml"/>
+    </UI>
+    <Dxf UIH="1" UID="0" UIG="1" UIX="0" UIP="0" lbENU="Dxf">
+      <WeldVertices UIH="0" UID="0" UIG="0" UIBG="0" lbENU="Weld Vertices" dt="Bool" v="1"/>
+      <ObjectDerivation UIH="0" UID="0" UIG="0" lbENU="Object Derivation" dt="Enum" enumSelected="By layer" v="0" enumItem_0="By layer" enumItem_1="By entity" enumItem_2="By block"/>
+      <ReferenceNode UIH="0" UID="0" UIG="0" UIBG="0" lbENU="Reference Node" dt="Bool" v="1"/>
+    </Dxf>
+    <Performance UIH="0" UID="0" UIG="1" UIX="1" UIP="0" lbENU="Performance">
+      <RemoveBadPolysFromMesh UIH="0" UID="0" UIG="0" UIBG="0" lbENU="Test meshes for bad polygons" dt="Bool" v="1"/>
+    </Performance>
+  </AdvOptGrp>
+  <FBXExtentionsSDK UIH="1" UID="0" UIG="1" UIX="0" UIP="1" lbENU="FBX Extensions SDK">
+    <FBXExtentionsSDKWarning UIH="0" UID="0" UIG="0" lbENU="FBX Extensions SDK Warning" dt="Warning" v="Add your custom properties here"/>
+  </FBXExtentionsSDK>
+</Import>

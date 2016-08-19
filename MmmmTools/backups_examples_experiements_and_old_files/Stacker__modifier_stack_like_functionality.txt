@@ -1,0 +1,22 @@
+import pymel.all as pm
+
+class Stacker(object):
+    def __init__(self, parentRef, dupIsFuture=False):
+        self.parent = parentRef
+        self.mmmm = self.parent
+        self.dupIsFuture = dupIsFuture
+        
+    def dup(self, dupIsFuture=False):
+        
+        objs = pm.ls(selection=True,)
+    
+        for obj in objs:
+            objShape = obj.getShape()
+            dup = pm.duplicate( [obj,objShape] , parentOnly=True)[0]
+            dupShape = dup.getShape()
+            if dupIsFuture == False:
+                dupShape.inMesh >> objShape.outMesh
+            else:
+                objShape.outMesh >> dupShape.inMesh
+            
+s = Stacker(mmmmTools)

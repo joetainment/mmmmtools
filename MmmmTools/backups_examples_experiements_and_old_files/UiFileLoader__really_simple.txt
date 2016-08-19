@@ -1,0 +1,108 @@
+import pymel.all as pm
+
+UiFileLoader = mmmmTools.designFileLoader.UiFileLoader
+
+class TestUi(UiFileLoader):
+    def __init__(self, uiFile ):
+        UiFileLoader.__init__(self, uiFile, autoHookup=False )
+        
+        nm = 'okButton'
+        self.widgets[nm].setCommand(    getattr( self, 'okButton'+'OnClick' )    )    
+
+        
+    def okButtonOnClick(self,dummy):
+        print( "hello world" )        
+
+
+
+
+uiFile = r"""D:\Dropbox\maya\2013-x64\scripts\mmmmGenericWindow.ui"""
+testUi = TestUi(uiFile)
+
+
+
+
+
+"""
+print design
+win = pm.window( design, edit=True )
+win.show()
+
+widgets = {}
+windowToFind = "MayaWindow|" + win
+widgetsFoundList = []
+for ui in allUis:
+    if ui.startswith("MayaWindow|" + win ):
+        ## Don't add the window itself to the widgets list
+        if ui!=windowToFind:
+            print( "name is:" )
+            print( ui )
+            try:
+                print( "Type is:" )
+                typ = cmds.objectTypeUI(ui)
+                print( typ )
+                #print(  cmds.textScrollList( ui, query=True, label=True )  )
+            except:
+                print( "not text" )            
+            
+            ## Strip off trailing pipe in name string
+            uiName = ui
+            while uiName.endswith('|'):
+                uiName = uiName[:-1]  
+            widgetsFoundList.append( uiName )
+            
+                          
+            #print( ui )
+            nameToFind = 'titleLineEdit'
+"""            
+            
+"""
+            if nameToFind in ui:
+                typ = pm.objectTypeUI(uiName)
+                if typ == 'field':
+                    widgets[nameToFind] = pm.textField(uiName, edit=True )
+                
+print( widgets )
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        for el in uiElementsInfos.values():
+            print( 'el info is:')
+            print( el.nameShort )
+            print( el.nameFull )
+            print( el.typ )
+            print( el.parentWindow )
+            
+
+
+
+"""
+
+               
+                #widgets[nameToFind] =
+
+#lay = win.children()
+
+#print lay
+
+
+#chi = lay.getChildren()
+#widgetsList = pm.layout( win, edit=True, childArray=True )
+#print widgetsList
+
+#print(        help(    type(lay)    )        )
+
+
+
+pass

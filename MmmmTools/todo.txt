@@ -1,0 +1,15 @@
+
+- add random ratio selection proper ui
+- eliminate goz stuff except for when it's actually called upon
+  (essentially make it do a call, and in worst case a manual install
+   from c:/users/public)
+   
+
+
+
+
+
+
+- make more generic functions for downloading
+
+- make modules register themselves to the ui?

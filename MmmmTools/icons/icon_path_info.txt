@@ -1,0 +1,51 @@
+
+XBMLANGPATH
+
+    This variable specifies the location of icon files, such as icons used for Shelf buttons. On Linux, the syntax is slightly different then other paths. For example:
+
+    XBMLANGPATH = "./icons/%B:$HOME/dev/icons/%B"
+
+    In this example, %B is acts as a placeholder that will be replaced by Maya with the bitmap filename.
+
+    In addition, for each module file found by Maya on startup, the icons subdirectory of the module's root directory ('icons/%B on Linus) will be added to XBMLANGPATH. See the description of the MAYA_MODULE_PATH variable above and Distributing Multi-File Modules for more information.
+
+    The following table lists the default paths, which will always follow any path that you specify.
+    Default for Windows
+
+    %MAYA_APP_DIR%\maya\2011\prefs\icons
+
+    %MAYA_LOCATION%\icons
+
+    %MAYA_LOCATION%\icons \paintEffects
+
+    %MAYA_LOCATION%\icons \cloth
+
+    %MAYA_LOCATION%\icons \fur
+    Default for Mac OS X
+
+    In your Home folder, in Library/Preferences/Autodesk/maya/2011/prefs/icons
+
+    In your Home folder, in Library/Preferences/Autodesk/maya/prefs/icons
+
+    /Users/Shared/Autodesk/maya/2011/icons
+
+    /Users/Shared/Autodesk/maya/icons
+
+    Inside the Maya package in /Applications/Autodesk/Maya 2011/Maya.app
+    Default for Linux
+
+    $MAYA_APP_DIR/maya/2011/prefs/icons/%B
+
+    $MAYA_APP_DIR/maya/prefs/icons/%B
+
+    /usr/autodesk/userconfig/maya/2011/icons/%B
+
+    /usr/autodesk/userconfig/maya/icons/%B
+
+    $MAYA_LOCATION/icons/%B
+
+    $MAYA_LOCATION/icons/paintEffects/%B
+
+    $MAYA_LOCATION/icons/cloth/%B
+
+    $MAYA_LOCATION/icons/fur/%B 
