@@ -1856,8 +1856,23 @@ class Hotkeys(object):
                             """
         self.namedCommands.append(nameCommand)
         #End of section to duplicate
+    
+        
+        #This section is meant to be duplicated and altered #
+        #Edit the name, key and mel parts#
+        nameCommand = {}
+        nameCommand['name'] = 'mmmmCreateAndAssignBlinn2'
+        nameCommand['annotation'] = nameCommand['name'] #Automatically makes it the same as the name to save customizing time.
+        nameCommand['key'] = 'p'
+        nameCommand['ctl'] = True
+        nameCommand['alt'] = True
+        nameCommand['mel'] = """
+                            python(  "mmmmTools.utils.hyperGraphAsActivePanelShowShapesToggle()"  );
+                            """
+        self.namedCommands.append(nameCommand)
+        #End of section to duplicate
     
-    
+    
         #This section is meant to be duplicated and altered #
         #Edit the name, key and mel parts#
         nameCommand = {}

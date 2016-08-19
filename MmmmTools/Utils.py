@@ -206,7 +206,22 @@ class Utils(object):
             except:
                 pass  ## we don't care if this fails, no big deal
 
-                
+        @staticmethod    def hyperGraphAsActivePanelShowShapesToggle():
+
+        hpPanelName = pm.mel.eval( 'getPanel("-withFocus");' )
+        edName = hpPanelName + "HyperGraphEd"
+
+
+        oldValue = pm.hyperGraph( edName, query=True, showShapes=True )
+
+        newShowShapesValue = 0
+
+        if oldValue == 0:
+            newShowShapesValue = 1
+            
+
+        pm.hyperGraph( edName, edit=True, showShapes=newShowShapesValue )
+            
     @staticmethod
     def convertSelectionToCreasedEdges():
         pm.mel.eval( "ConvertSelectionToEdges;" )
