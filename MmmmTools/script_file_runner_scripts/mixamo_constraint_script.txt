@@ -1,0 +1,31 @@
+import traceback
+import pymel.all as pm
+
+
+class Constrainer(object):
+    def __init__(self):
+        prefix = "Character1_"
+        bindPrefix = "mixamoBind_"
+        animPrefix = "mixamoAnim_"
+        objs = pm.ls( selection=True )
+
+for obj in objs:
+    objName = obj.name( )
+    if type( obj ) == pm.core.nodetypes.Joint:
+        try:
+            targetBindName = objName.replace( prefix, bindPrefix )
+            pm.orientConstraint( targetBindName, objName, maintainOffset=1 )
+        except:
+    	    print( traceback.format_exc()  )
+
+for obj in objs:
+    objName = obj.name( )
+    if type( obj ) == pm.core.nodetypes.Joint:
+        try:
+            targetAnimName = objName.replace( prefix, animPrefix )
+            targetBindName = objName.replace( prefix, bindPrefix )            
+            pm.orientConstraint( targetAnimName, targetBindName, maintainOffset=0 )
+        except:
+    	    print( traceback.format_exc()  )
+
+tmp = 0
