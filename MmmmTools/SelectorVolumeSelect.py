@@ -91,10 +91,16 @@ class SelectorVolumeSelect(object):
       
       
 from collections import OrderedDict 
-from PySide import QtCore
-from PySide import QtGui
+try:
+    from PySide import QtCore
+    from PySide import QtGui
+except:    
+    from PySide2 import QtCore
+    from PySide2 import QtGui
 
+    
 
+"""
 class SelectorVolumeSelectApp(MmmmTools.MmmmAnyapp):
     def __init__(self,*args,**kargs):
         ## Setting up default options for keyword arguments
@@ -144,4 +150,4 @@ class SelectorVolumeSelectApp(MmmmTools.MmmmAnyapp):
 #mmmmTools.selector.volumeSelector.selectVertsByVolume()
 
 #volumeSelectorApp = MmmmVolumeSelectorApp( make_default_ui=True )
-      
+"""      
