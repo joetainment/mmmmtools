@@ -173,7 +173,7 @@ class MmmmShellThicken(object):
                 ## At this point, we should have just the border verts selected
                 
                 ## Merge the selected vertices                if len(verticiesOnShellBorder)!=0:
-                    pm.polyMergeVertex( verticiesOnShellBorder, ch=1, distance=0.00001  )
+                    pm.polyMergeVertex( verticiesOnShellBorder, ch=1, distance=distanceForMerge  )
                 ##alwaysMergeTwoVerticies defaults to false
                 
                 outputSelection += shellAfterExtrude
