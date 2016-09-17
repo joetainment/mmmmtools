@@ -127,8 +127,15 @@ class MmmmShellThicken(object):
         ## Copy it so we have a list that's safe to modify
         ## without loosing the original selection
         facesSelAtStart = oSel[:]        facesSelAtStart = getSelectionAsFaces(facesSelAtStart)        shells = getShells( facesSelAtStart )
-                outputSelection = []        ## use pm in the next section        ## because cmds gives a weird api error        for shell in shells:            if ':' in shell:                ## can extrude directly                pm.polyExtrudeFacet( shell, ch=1, keepFacesTogether=1, smoothingAngle=180, divisions=divisions, thickness=thickness )                pm.eval('ConvertSelectionToShell;')
-                shellAfterExtrude = lss()                outputSelection += shellAfterExtrude            else:                print( "shell selected is:" )                print( shell )                pm.select( shell )                pm.polyChipOff( shell, ch=1, keepFacesTogether=1, dup=1, off=0 )                facesDup = lss()                print( facesDup )
+                outputSelection = []        ## use pm in the next section        ## because cmds gives a weird api error        simpleCount = 0        complexCount = 0        for shell in shells:            print( "handling shell..." )            print( shell )            doComplex = False            if len(shell)==1:                subShell=shell[0]                if not ':' in subShell:
+                    print( "simple shell is:" )
+                    print( shell )
+                    simpleCount += 1
+                    ## can extrude directly
+                    pm.polyExtrudeFacet( shell, ch=1, keepFacesTogether=1, smoothingAngle=180, divisions=divisions, thickness=thickness )
+                    pm.mel.eval('ConvertSelectionToShell;')
+                    shellAfterExtrude = lss()
+                    outputSelection += shellAfterExtrude                else:                    doComplex=True            else:                doComplex=True                        if doComplex:                complexCount+=1                print( "complex shell selected is:" )                print( shell )                pm.select( shell )                pm.polyChipOff( shell, ch=1, keepFacesTogether=1, dup=1, off=0 )                facesDup = lss()                print( facesDup )
                 pm.polyExtrudeFacet( facesDup, ch=1, keepFacesTogether=1, smoothingAngle=180, divisions=divisions,  thickness=thickness )
         
                 pm.polyNormal( shell, normalMode=0, userNormalMode=0 )
@@ -171,7 +178,9 @@ class MmmmShellThicken(object):
                 
                 outputSelection += shellAfterExtrude
                 ## Output a sensible selection, all polygons in the shell
-        pm.select( outputSelection )            
+        pm.select( outputSelection )
+        print( "simple shells: " + str(simpleCount) )
+        print( "complex shells: " + str(complexCount) )
         """
         ## Enfore the fact that this tool only works on shells
         ## if a shell isn't already selected
