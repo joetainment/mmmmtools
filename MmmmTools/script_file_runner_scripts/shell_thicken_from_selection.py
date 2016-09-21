@@ -107,17 +107,17 @@ class MmmmShellThickenUi(object):
                 self.divisionsIntField = pm.intField( value=1, width=200 )
                 self.mergeLabel = pm.text( "Distance (tolerance) for verts merge:" )
                 self.mergeFloatField = pm.floatField( value=0.00001, precision=9, width=200 )
-
-                self.btn1 = pm.button(label="Divisions", 
+                self.useTzCheckBox = pm.checkBox( value=True, label="Use Local Translate Z for Thickness" )
+                self.btn1 = pm.button(label="Thicken Shells", 
                     command=lambda x: self.shellThicken.shellThicken(
-                        thickness=self.thicknessFloatField.getValue(),                        divisions=self.divisionsIntField.getValue(),                        distanceForMerge=self.mergeFloatField.getValue()
-                    )
-                )
+                        thickness=self.thicknessFloatField.getValue(),                        divisions=self.divisionsIntField.getValue(),                        distanceForMerge=self.mergeFloatField.getValue(),                        useTz=self.useTzCheckBox.getValue()
+                    )                )
+                #"""    #def printInfo(self):        #print( self.useTzCheckBox.getValue() )
         
 
 class MmmmShellThicken(object):
     @classmethod    
-    def shellThicken( cls, thickness=1.0, divisions=1, distanceForMerge=0.00001 ):
+    def shellThicken( cls, thickness=1.0, divisions=1, distanceForMerge=0.00001, useTz=True ):
         ## Make a shorthand for listing selection
         lss = lambda: pm.ls(selection=True)
         cmdslss = lambda: cmds.ls(selection=True)
@@ -131,12 +131,15 @@ class MmmmShellThicken(object):
                     print( "simple shell is:" )
                     print( shell )
                     simpleCount += 1
-                    ## can extrude directly
-                    pm.polyExtrudeFacet( shell, ch=1, keepFacesTogether=1, smoothingAngle=180, divisions=divisions, thickness=thickness )
+                    ## can extrude directly                    if useTz==False:
+                        pm.polyExtrudeFacet( shell, ch=1, keepFacesTogether=1, smoothingAngle=180, divisions=divisions, thickness=thickness )                    else:                        pm.polyExtrudeFacet( shell, ch=1, keepFacesTogether=1, smoothingAngle=180, divisions=divisions, thickness=0.0, localTranslateZ = thickness )
                     pm.mel.eval('ConvertSelectionToShell;')
                     shellAfterExtrude = lss()
                     outputSelection += shellAfterExtrude                else:                    doComplex=True            else:                doComplex=True                        if doComplex:                complexCount+=1                print( "complex shell selected is:" )                print( shell )                pm.select( shell )                pm.polyChipOff( shell, ch=1, keepFacesTogether=1, dup=1, off=0 )                facesDup = lss()                print( facesDup )
-                pm.polyExtrudeFacet( facesDup, ch=1, keepFacesTogether=1, smoothingAngle=180, divisions=divisions,  thickness=thickness )
+                if useTz==False:
+                    pm.polyExtrudeFacet( facesDup, ch=1, keepFacesTogether=1, smoothingAngle=180, divisions=divisions, thickness=thickness )
+                else:
+                    pm.polyExtrudeFacet(                        facesDup, ch=1, keepFacesTogether=1, smoothingAngle=180,                        divisions=divisions, thickness=0.0, localTranslateZ = thickness                    )
         
                 pm.polyNormal( shell, normalMode=0, userNormalMode=0 )
         
