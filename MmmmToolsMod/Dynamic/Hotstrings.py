@@ -49,7 +49,8 @@ import pymel.all as pm
 
 import maya.OpenMaya as OpenMaya
 
-from Utils import Utils
+import UtilsMod as Utils
+
 
 
 u = Utils

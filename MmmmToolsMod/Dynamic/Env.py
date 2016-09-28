@@ -38,8 +38,8 @@ import maya.cmds as cmds
 import maya.mel
 import pymel.all as pm
 
-import EnvPopularScriptsAutoSourceimport UtilsMod
-reload(EnvPopularScriptsAutoSource) ## inefficient but it's fast enough
+#import EnvPopularScriptsAutoSourceimport UtilsMod
+#reload(EnvPopularScriptsAutoSource) ## inefficient but it's fast enough
 u = Utils = UtilsMod.UtilsPather = UtilsMod.Pather
 class Env(object):
     """
@@ -70,7 +70,7 @@ class Env(object):
         self.setupScriptPaths()
         
         ## Source popular scripts (list is defined in Configuration module)
-        EnvPopularScriptsAutoSource.main( self )
+        #EnvPopularScriptsAutoSource.main( self )
         
         self.makeAutoHotkeyPath()
 

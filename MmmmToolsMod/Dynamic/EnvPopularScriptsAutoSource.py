@@ -1,6 +1,7 @@
 import pymel.all as pm
+import UtilsMod as Utils
 
-from Utils import Utils
+'''
 u = Utils
 
 def main( caller ):
@@ -33,3 +34,4 @@ def main( caller ):
                         "  ...proceeding without it." )
         else:
             u.log( "Script sourced: " + fn )
+'''			

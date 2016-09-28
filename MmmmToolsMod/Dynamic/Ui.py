@@ -26,10 +26,10 @@ import sys, os, shutil, thread, traceback
 import maya.cmds as cmds
 import maya.mel
 import pymel.all as pm
-import MmmmToolsMod
-from Utils import Utils
+
+import UtilsMod
 
-u = Utils
+u = UtilsMod.Utils
 
 
 

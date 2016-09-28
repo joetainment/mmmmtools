@@ -30,8 +30,11 @@ import maya.cmds as cmds
 import maya.mel
 import pymel.all as pm
 
-from Utils import Utils
-from Utils import Pather
+import UtilsMod as Utils
+
+
+#from Utils import Utils
+#from Utils import Pather
 
 u = Utils
 
