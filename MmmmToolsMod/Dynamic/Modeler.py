@@ -33,74 +33,71 @@ import pymel.all as pm
 import maya.mel
 
 
-import UtilsMod
-
+try:
+    reload(UtilsMod)
+except:
+    import UtilsMod
 
 try:
     reload( ModelerSelector )
 except:
-    pass
-import ModelerSelector
+    import ModelerSelector
 
 try:
     reload( ModelerMirrorer )
 except:
-    pass
-import ModelerMirrorer
+    import ModelerMirrorer
 
 try:
     reload( ModelerRetoper )
 except:
-    pass
-import ModelerRetoper
+    import ModelerRetoper
 
 try:
     reload( ModelerMrClean )
 except:
-    pass
-import ModelerMrClean
+    import ModelerMrClean
 
 try:
     reload( ModelerAligner )
 except:
-    pass
-import ModelerAligner
+    import ModelerAligner
 
 try:
     reload( ModelerGridTools )
 except:
-    pass
-import ModelerGridTools
-U = Utils = UtilsMod.Utils
+    import ModelerGridTools
+
+
 class Modeler(object):
     def __init__(self, parent):
         self.parent = parent
         
     def creaseSelectedEdges( self ):
-        U.creaseSelectedEdges()
+        UtilsMod.Utils.creaseSelectedEdges()
                 
     def uncreaseSelectedEdges( self ):
-        U.uncreaseSelectedEdges()
+        UtilsMod.Utils.uncreaseSelectedEdges()
                 
     def selectCreasedEdges( self ):
-        U.convertSelectionToCreasedEdges()
+        UtilsMod.Utils.convertSelectionToCreasedEdges()
             
 
     def selectHardEdges( self ):
-        U.convertSelectionToHardEdges()
+        UtilsMod.Utils.convertSelectionToHardEdges()
         
     def activateSplitPolygonTool( self ):
         pm.mel.eval("SplitPolygonTool;")
           
     def propagateEdgeHardnessOn( self ):
-        U.setAttributeOnSelected( "propagateEdgeHardness", 1 )
+        UtilsMod.Utils.setAttributeOnSelected( "propagateEdgeHardness", 1 )
     
                 
     def propagateEdgeHardnessOff( self ):
-        U.setAttributeOnSelected( "propagateEdgeHardness", 0 )    
+        UtilsMod.Utils.setAttributeOnSelected( "propagateEdgeHardness", 0 )    
                 
     def centerPivotOnComponents(self):
-        U.centerPivotOnSelectedComponents()
+        UtilsMod.Utils.centerPivotOnSelectedComponents()
                 
     def runSelector( self, makeUi=False, trisOnly=False, ngonsOnly=False, quadsOnly=False ):
         reload( ModelerSelector )

@@ -7,30 +7,40 @@ actions = {'default':"""   hotkeyEditor; print "Default Action is Hotkey Editor.
 
 ## Major actions for MmmmTools Development
 actions['mmmm'] = """
-python("import MmmmTools");
-python("reload(MmmmTools)");
-python("import MmmmTools");
-python("mmmmTools = MmmmTools.MmmmTools()");
+python("import MmmmToolsMod");
+python("reload(MmmmToolsMod)");
+python("import MmmmToolsMod");
+python("mmmmTools = MmmmToolsMod.Dynamic.MmmmTools()");
 """
 
+
+
+
+
+'''
 ## Major actions for MmmmTools Development
 ## double \\ needed to make literal backslash
 actions['\\'] = """
-python("import MmmmTools");
-python("reload(MmmmTools)");
-python("import MmmmTools");
-python("mmmmTools = MmmmTools.MmmmTools()");
+python("import MmmmToolsMod");
+python("reload(MmmmToolsMod)");
+python("import MmmmToolsMod");
+python("mmmmTools = MmmmToolsMod.Dynamic.MmmmTools()");
 python("mmmmTools.gamer.runGamerFbxExportAll()");
 python("print('Ran test')");
 """
 
 actions['fbx'] = """
-python("import MmmmTools");
-python("reload(MmmmTools)");
-python("import MmmmTools");
-python("mmmmTools = MmmmTools.MmmmTools()");
+python("import MmmmToolsMod");
+python("reload(MmmmToolsMod)");
+python("import MmmmToolsMod");
+python("mmmmTools = MmmmToolsMod.Dynamic.MmmmTools()");
 python("mmmmTools.gamer.runGamerFbxExportAll()");
 """
+'''
+
+
+
+
 
 
 actions['savekeys'] = """

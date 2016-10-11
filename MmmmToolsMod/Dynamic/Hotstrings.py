@@ -49,10 +49,11 @@ import pymel.all as pm
 
 import maya.OpenMaya as OpenMaya
 
-import UtilsMod as Utils
+import UtilsMod
 
 
 
+Utils = UtilsMod.Utils
 u = Utils
 
 
@@ -179,18 +180,19 @@ class Hotstrings(object):
 
     
     def help(self):
-        u.log("\nAvailable Hotstrings Commands:  \n")
+        u.log("\nAvailable Hotstrings Commands:  \n", mode='print')
         self.printActions()
-        u.log("A list of hotstrings commands is shown above.")
-        u.log("To use hotstrings, type the backslash key,")
-        u.log("then type a command in the hotstrings window and press enter.")
-        u.log("For example, push backslash, then in the window")
-        u.log("that appears type:    c      and then press enter \n")
+        u.log("A list of hotstrings commands is shown above.",  mode='print')
+        u.log("To use hotstrings, type the backslash key,",  mode='print')
+        u.log("then type a command in the hotstrings window and press enter.",  mode='print')
+        u.log("For example, push backslash, then in the window",  mode='print')
+        u.log("that appears type:    c      and then press enter \n",  mode='print')
+		
     
     def printActions(self):
         keys = self.actions.keys()
         for k in keys:
-            u.log( "\n\n\n Command:  " + k )
+            u.log( "\n\n\n Command:  " + k , mode='print')
             u.log(self.actions[k])
         u.log("\n")
             
