@@ -844,7 +844,7 @@ class Hotkeys(object):
         nameCommand['key'] = 'o'  # didn't use unmodified one because it is a useful marking menu
         nameCommand['alt'] = True
         nameCommand['mel'] = """
-            python( "MmmmTools.Modeler.ModelerRetoper.ModelerRetoper.getInstance().projectSelection()" );
+            python( "MmmmToolsMod.Dynamic.Modeler.ModelerRetoper.ModelerRetoper.getInstance().projectSelection()" );
                             """
         self.namedCommands.append(nameCommand)
         #End of section to duplicate        
@@ -856,7 +856,7 @@ class Hotkeys(object):
         nameCommand['key'] = 'O'  # didn't use unmodified one because it is a useful marking menu
         nameCommand['alt'] = True
         nameCommand['mel'] = """
-            python( "MmmmTools.Modeler.ModelerRetoper.ModelerRetoper.getInstance().setReference()" );
+            python( "MmmmToolsMod.Dynamic.Modeler.ModelerRetoper.ModelerRetoper.getInstance().setReference()" );
                             """
         self.namedCommands.append(nameCommand)
         #End of section to duplicate
@@ -1236,7 +1236,7 @@ class Hotkeys(object):
         nameCommand['ctl'] = True
         nameCommand['alt'] = False
         nameCommand['mel'] = """
-            python(  "MmmmTools.Modeler.ModelerGridTools.ModelerGridTools.grow(log=True, setManip=True)"  );
+            python(  "MmmmToolsMod.Dynamic.Modeler.ModelerGridTools.ModelerGridTools.grow(log=True, setManip=True)"  );
                             """
                             
         self.namedCommands.append(nameCommand)
@@ -1253,7 +1253,7 @@ class Hotkeys(object):
         nameCommand['ctl'] = True
         nameCommand['alt'] = False
         nameCommand['mel'] = """
-                python(  "MmmmTools.Modeler.ModelerGridTools.ModelerGridTools.shrink(log=True, setManip=True)"  );
+                python(  "MmmmToolsMod.Dynamic.Modeler.ModelerGridTools.ModelerGridTools.shrink(log=True, setManip=True)"  );
                             """
         self.namedCommands.append(nameCommand)
         #End of section to duplicate 
@@ -1269,7 +1269,22 @@ class Hotkeys(object):
         nameCommand['ctl'] = False
         nameCommand['alt'] = True
         nameCommand['mel'] = """
-                python(  "MmmmTools.Modeler.ModelerGridTools.ModelerGridTools.snapVertsToGrid()"  );
+                python(  "MmmmToolsMod.Dynamic.Modeler.ModelerGridTools.ModelerGridTools.putSelectedVertsOnGrid()"  );
+                            """
+        self.namedCommands.append(nameCommand)
+        #End of section to duplicate        
+                
+                
+        #This section is meant to be duplicated and altered #
+        #Edit the name, key and mel parts#
+        nameCommand = {}
+        nameCommand['name'] = 'mmmmGridSnapSelectedObjs'
+        nameCommand['annotation'] = nameCommand['name'] #Automatically makes it the same as the name to save customizing time.
+        nameCommand['key'] = '['
+        nameCommand['ctl'] = True
+        nameCommand['alt'] = True
+        nameCommand['mel'] = """
+                python(  "MmmmToolsMod.Dynamic.Modeler.ModelerGridTools.ModelerGridTools.putSelectedObjsOnGrid()"  );
                             """
         self.namedCommands.append(nameCommand)
         #End of section to duplicate        

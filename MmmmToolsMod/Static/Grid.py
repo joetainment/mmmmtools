@@ -6,9 +6,6 @@ import maya
 import maya.cmds as cmds
 
 
-import MmmmToolsMod
-
-
 
 def reset(setManip=False):
     pymel.all.grid(reset=True)
@@ -83,9 +80,10 @@ def shrink( setManip=False, log=False):
     if log==True:
         pymel.all.warning(    "Grid spacing value is: " + str(  getSpacing()  )    )
         
-    
+def putSelectedVertsOnGrid():
+    snapVertsToGrid()  ## basically just an alias of the function name
         
-def snapVertsToGrid( log=False):
+def snapVertsToGrid():
     originalSelection = pymel.all.ls( selection=True, flatten=True )
     pymel.all.mel.eval('ConvertSelectionToVertices;')
     selVerts = pymel.all.ls( selection=True, flatten=True )
@@ -136,6 +134,7 @@ def putSelectedObjsOnGrid():
     ss = getGridSnappableSpacing()
     putSelectedObjsOnSnappableSpacing(ss)
 
+    
 def putSelectedObjsOnSnappableSpacing(snappableSpacing):
     oSel = pm.ls(selection=True)
     objs = oSel[:]

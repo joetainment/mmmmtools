@@ -1,4 +1,4 @@
-import sysimport pymel.all as pmimport maya.cmds as cmdsimport maya.OpenMaya as omimport MmmmToolsModimport MmmmToolsMod.Static
+import sysimport pymel.all as pmimport maya.cmds as cmdsimport maya.OpenMaya as om
 def info(msg):
     om.MGlobal.displayInfo(msg)
 

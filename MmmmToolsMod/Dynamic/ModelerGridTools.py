@@ -6,6 +6,9 @@ import maya.cmds
 import MmmmToolsMod
 
 
+
+
+
 class ModelerGridTools(object):
     def __init__(self, parent=None, makeUi=True):
         self.parent = parent
@@ -14,6 +17,20 @@ class ModelerGridTools(object):
         if makeUi:
             self.ui = ModelerGridToolsUi(self,self.mmmm)
         pass
+    @classmethod    
+    def grow(cls, setManip=True,log=True ):
+        MmmmToolsMod.Static.Grid.grow(setManip=setManip,log=log)
+    @classmethod
+    def shrink(cls, setManip=True,log=True ):
+        MmmmToolsMod.Static.Grid.shrink(setManip=setManip,log=log)
+
+    @classmethod
+    def putSelectedObjsOnGrid(cls):
+        MmmmToolsMod.Static.Grid.putSelectedObjsOnGrid()
+
+    @classmethod
+    def putSelectedVertsOnGrid(cls):
+        MmmmToolsMod.Static.Grid.putSelectedVertsOnGrid()
 
         
 class ModelerGridToolsUi(object):
