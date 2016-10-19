@@ -51,10 +51,14 @@ class ModelerRetoper(object):
           cls.__instance = ModelerRetoper( makeUi=False )
           return cls.__instance
 
-  def __init__(self, makeUi=False, projectImmediately=False, setReferenceImmediately=False ):
+  def __init__(self, makeUi=False,
+                projectImmediately=False,
+                setReferenceImmediately=False,
+                parentWidget=None
+      ):
       ModelerRetoper.__instance = self
       if makeUi==True:
-          self.ui = ModelerRetoperUi( self )
+          self.ui = ModelerRetoperUi( self, parentWidget=parentWidget )
       if projectImmediately==True:
           self.projectSelection()
       if setReferenceImmediately==True:
@@ -118,49 +122,66 @@ class ModelerRetoper(object):
 
 
 class ModelerRetoperUi(object):
-  def __init__(self, parentRef):
-    self.parentRef = parentRef
-    self.buttons = []
-    self.window = pm.window( sizeable = True, title = "Retoper", titleBar=True)
-    with self.window:
-        self.layout = pm.columnLayout()
-        with self.layout:
-            self.lab1 = pm.Text( label='A "Retop" Tool For Creating New Topology.', align='left',parent = self.layout )
-            self.lab2 = pm.Text( label='Please Note: This tool does not preserve', width=300, align='left',parent = self.layout )
-            self.lab3 = pm.Text( label='construction history of edited objects.', width=300, align='left',parent = self.layout )
-             
+    def __init__(self, parentRef, parentWidget=None):
+        self.parentRef = parentRef
+        self.buttons = []
+        self.widgets = {}
 
-            btn__setReference = pm.Button ( label = 'Set Reference Mesh',parent = self.layout,
-                        command = lambda xc: self.parentRef.setReference(),width = 300  )
-            self.buttons.append( btn__setReference )
+        if parentWidget==None:
+            parentWidget = self.widgets['parentWidget'] = pm.Window(
+                sizeable = True, title = "Retoper", titleBar=True
+            )
+        else:
+            self.widgets['parentWidget'] = parentWidget
+
             
-            btn__makeReferenceLive = pm.Button ( label = 'Make Reference Live',parent = self.layout,
-                        command = lambda xc: self.parentRef.makeReferenceLive(),width = 300  )
-            self.buttons.append( btn__makeReferenceLive )
-            
-            btn__makeReferenceNotLive = pm.Button ( label = 'Make Reference Not Live',parent = self.layout,
-                        command = lambda xc: self.parentRef.makeReferenceNotLive(),width = 300  )
-            self.buttons.append( btn__makeReferenceNotLive )
-                        
-            btn__makeReferenceHidden = pm.Button ( label = 'Make Reference Hidden',parent = self.layout,
-                        command = lambda xc: self.parentRef.makeReferenceHidden(),width = 300  )
-            self.buttons.append( btn__makeReferenceHidden )
-            
-            btn__makeReferenceVisible = pm.Button ( label = 'Make Reference Visible',parent = self.layout,
-                        command = lambda xc: self.parentRef.makeReferenceVisible(),width = 300  )
-            self.buttons.append( btn__makeReferenceVisible )
-            
-            btn__projectSelection = pm.Button ( label = 'Project Selection To Surface',parent = self.layout,
-                        command = lambda xc: self.parentRef.projectSelection(),width = 300  )
-            self.buttons.append( btn__projectSelection )            
-            
-            ## put a button here for auto new material and transparency animation
-            ## put a button here for auto ref layer
-            ## put a button here for quad draw (a shortcut)
-            ## put a button here to project along particular axis (essentially just scale first)
-            
-            
-    # Show Window
-    pm.showWindow(self.window)
-    self.window.setWidth(200)
-    self.window.setHeight(300)
+
+        with parentWidget:
+            self.layout = pm.columnLayout()
+            with self.layout:
+                labelStr = 'A "Retop" Tool For Creating New Topology.'
+                labelStr += '\n'
+                labelStr += 'Please Note: This tool does not preserve' 
+                labelStr += '\n'
+                labelStr += 'construction history of edited objects.'
+                self.lab1 = pm.Text( label=labelStr, align='left',parent = self.layout )
+                ##self.lab2 = pm.Text( label='Please Note: This tool does not preserve', width=300, align='left',parent = self.layout )
+                ##self.lab3 = pm.Text( label='construction history of edited objects.', width=300, align='left',parent = self.layout )
+                
+                btn__setReference = pm.Button ( label = 'Set Reference Mesh',parent = self.layout,
+                            command = lambda xc: self.parentRef.setReference()  )
+                self.buttons.append( btn__setReference )
+                
+                btn__makeReferenceLive = pm.Button ( label = 'Make Reference Live',parent = self.layout,
+                            command = lambda xc: self.parentRef.makeReferenceLive()  )
+                self.buttons.append( btn__makeReferenceLive )
+                
+                btn__makeReferenceNotLive = pm.Button ( label = 'Make Reference Not Live',parent = self.layout,
+                            command = lambda xc: self.parentRef.makeReferenceNotLive()  )
+                self.buttons.append( btn__makeReferenceNotLive )
+                            
+                btn__makeReferenceHidden = pm.Button ( label = 'Make Reference Hidden',parent = self.layout,
+                            command = lambda xc: self.parentRef.makeReferenceHidden()  )
+                self.buttons.append( btn__makeReferenceHidden )
+                
+                btn__makeReferenceVisible = pm.Button ( label = 'Make Reference Visible',parent = self.layout,
+                            command = lambda xc: self.parentRef.makeReferenceVisible()  )
+                self.buttons.append( btn__makeReferenceVisible )
+                
+                btn__projectSelection = pm.Button ( label = 'Project Selection To Surface',parent = self.layout,
+                            command = lambda xc: self.parentRef.projectSelection()  )
+                self.buttons.append( btn__projectSelection )            
+                
+                ## put a button here for auto new material and transparency animation
+                ## put a button here for auto ref layer
+                ## put a button here for quad draw (a shortcut)
+                ## put a button here to project along particular axis (essentially just scale first)
+                
+                
+        # Show Window
+        if type( parentWidget ) == pm.core.windows.window:
+            win = parentWidget
+            pm.showWindow(win)
+            win.setWidth(200)
+            win.setHeight(300)
+    

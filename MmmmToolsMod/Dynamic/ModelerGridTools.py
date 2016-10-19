@@ -1,3 +1,5 @@
+import traceback
+
 import pymel
 import pymel.all as pm
 import maya
@@ -10,13 +12,24 @@ import MmmmToolsMod
 
 
 class ModelerGridTools(object):
-    def __init__(self, parent=None, makeUi=True):
+    def __init__(self, parent=None, mmmm=None, makeUi=True, parentWidget=None):
         self.parent = parent
         self.modeler = self.parent
-        self.mmmm = self.modeler.parent
+        if mmmm!=None:
+            self.mmmm = mmmm
+        else:
+            try:
+                self.mmmm = self.modeler.parent
+            except:
+                print( tracback.format_exc() )
         if makeUi:
-            self.ui = ModelerGridToolsUi(self,self.mmmm)
+            self.ui = ModelerGridToolsUi(self,self.mmmm, parentWidget=parentWidget)
         pass
+    
+    def createUi(self):
+        self.ui = ModelerGridToolsUi(self,self.mmmm)
+        return self.ui
+        
     @classmethod    
     def grow(cls, setManip=True,log=True ):
         MmmmToolsMod.Static.Grid.grow(setManip=setManip,log=log)
@@ -35,7 +48,7 @@ class ModelerGridTools(object):
         
 class ModelerGridToolsUi(object):
 
-    def __init__(self,parent=None,mmmm=None):
+    def __init__(self,parent=None,mmmm=None, parentWidget=None):
         self.parent = parent
         self.mmmm = mmmm
         self.widgets = { }
@@ -46,8 +59,8 @@ class ModelerGridToolsUi(object):
             "with the button."
         )
         
-        aw = self.addWidget
-        win = pm.Window( title="Grid Manager", width=100,height=200)
+        
+        
         
         try:
             initialMultiplier = pm.melGlobals['MmmmToolsModelerGridToolsMultiplier']
@@ -62,8 +75,18 @@ class ModelerGridToolsUi(object):
         )
         initialWholeSize = pm.grid( query=True, size=True ) / initialMultiplier
         
+        ## Use this as parent otherwise use something else
+        if parentWidget==None:
+            parentWidget = self.widgets['parentWidget'] = pm.Window(
+                title="Grid Manager", width=100,height=200
+            )
+        else:
+            self.widgets['parentWidget'] = parentWidget
         
-        with aw( 'win', win):
+        ## Make a shortcut for function that addWidgets
+        aw = self.addWidget
+        
+        with parentWidget:
           with aw( 'col', pm.ColumnLayout() ):
             aw('mayaOptionsButton',pm.Button(label="Maya Grid Options...",
                     command= lambda x: pm.mel.eval("GridOptions;")
@@ -152,7 +175,14 @@ class ModelerGridToolsUi(object):
             aw('shrinkButton', pm.Button(label="Shrink",
                 command= lambda x: self.shrinkWithWarning(log=True)  ) )
             
-        self.widgets['win'].show()
+                
+        # Show Window
+        if type( parentWidget ) == pm.core.windows.window:
+            win = parentWidget
+            pm.showWindow(win)
+            win.setWidth(200)
+            win.setHeight(300)
+        
     
     
     def resetToMayaDefault(self):

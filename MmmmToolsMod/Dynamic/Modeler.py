@@ -121,18 +121,18 @@ class Modeler(object):
                 print( traceback.format_exc()     )
 
         
-    def runRetoper( self, makeUi=False ):
+    def runRetoper( self, makeUi=False, parentWidget=None ):
         reload( ModelerRetoper )
-        self.retoper = ModelerRetoper.ModelerRetoper( makeUi=makeUi )  
+        self.retoper = ModelerRetoper.ModelerRetoper( makeUi=makeUi, parentWidget=parentWidget )  
     def runAligner( self, makeUi=True ):
         reload( ModelerAligner )
         self.modelerAligner = ModelerAligner.ModelerAligner( makeUi=makeUi )
-    def runMirrorer( self, makeUi=True ):
+    def runMirrorer( self, makeUi=True, parentWidget=None ):
         reload( ModelerMirrorer )
-        self.modelerMirrorer = ModelerMirrorer.ModelerMirrorer( makeUi=makeUi )
+        self.modelerMirrorer = ModelerMirrorer.ModelerMirrorer( makeUi=makeUi, parentWidget=parentWidget )
     def runMrClean( self, makeUi=True ):
         reload( ModelerMrClean )
         self.modelerMrClean = ModelerMrClean.ModelerMrCleanUi( makeUi=makeUi )
-    def runGridTools( self, makeUi=True ):
+    def runGridTools( self, makeUi=True, parentWidget=None ):
         reload( ModelerGridTools )
-        self.modelerGridTools = ModelerGridTools.ModelerGridTools( parent=self, makeUi=makeUi )
+        self.modelerGridTools = ModelerGridTools.ModelerGridTools( parent=self, makeUi=makeUi, parentWidget=parentWidget )

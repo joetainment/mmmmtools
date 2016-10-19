@@ -23,12 +23,12 @@ class ModelerMirrorer(object):
           cls.__instance = ModelerMirrorer( makeUi=False )
           return cls.__instance
 
-    def __init__(self, makeUi = True):
+    def __init__(self, makeUi = True, parentWidget=None):
         if makeUi==True:
-            self.makeUi()
+            self.makeUi(parentWidget=parentWidget)
             
-    def makeUi(self):
-        self.ui = ModelerMirrorerUi( self )
+    def makeUi(self, parentWidget=None):
+        self.ui = ModelerMirrorerUi( self, parentWidget=parentWidget )
         return self.ui
             
     def makeStartShape( self, meshType="cube", segments3d=[2,2,2], smooth=False ):
@@ -86,12 +86,20 @@ class ModelerMirrorer(object):
 
 
 class ModelerMirrorerUi(object):
-    def __init__(self, parentRef=None):
+    def __init__(self, parentRef=None, parentWidget=None):
         self.parentRef = parentRef
         self.buttons = []
         self.layoutsR = []
-        self.window = pm.window( sizeable = True, title = "Mirrorer", titleBar=True, resizeToFitChildren=True,)
-        with self.window:
+        
+        if parentWidget==None:
+            parentWidget = self.widgets['parentWidget'] = pm.window(
+                sizeable = True, title = "Mirrorer", titleBar=True,
+                resizeToFitChildren=True,
+            )
+        else:
+            self.widgets['parentWidget'] = parentWidget        
+        
+        with parentWidget:
             self.layoutC = pm.columnLayout( )
             with self.layoutC:
                 row = pm.rowLayout( numberOfColumns=3 )
@@ -124,10 +132,12 @@ class ModelerMirrorerUi(object):
                                 command = lambda xc: self.parentRef.mirrorGeometry( ),width = 200 )
         
             
-        
         # Show Window
-        pm.showWindow(self.window)
-        self.window.setWidth(300)
-        self.window.setHeight(200)
+        if type( parentWidget ) == pm.core.windows.window:
+            win = parentWidget
+            pm.showWindow(win)
+            win.setWidth(300)
+            win.setHeight(200)        
+        
     
 pass
