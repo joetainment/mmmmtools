@@ -5,6 +5,16 @@ import maya.OpenMaya as om
 import traceback
 
 
+def cycleSelectByFaceCenters():
+    l = om.MGlobal.displayInfo
+    state = pm.polySelectConstraint( query=True, wholeSensitive=True )
+    if state:
+        pm.polySelectConstraint( wholeSensitive=False )
+        l( 'Select By Face Centers - ON   (Maya bug may prevent this from showing until next selection change.)')
+    else:
+        pm.polySelectConstraint( wholeSensitive=True )
+        l( 'Select By Face Centers - OFF  (Maya bug may prevent this from showing until next selection change.)' )
+
 
 def cycleManipXformConstraint():
 

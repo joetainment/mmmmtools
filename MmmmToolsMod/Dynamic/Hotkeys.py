@@ -524,7 +524,22 @@ class Hotkeys(object):
     
     
     def hotkeysAsPolygons(self):
-                            
+                     
+                     
+        #This section is meant to be duplicated and altered #
+        #Edit the name, key and mel parts#
+        nameCommand = {}
+        nameCommand['name'] = 'mmmmCycleManipXformConstraint'
+        nameCommand['annotation'] = nameCommand['name'] #Automatically makes it the same as the name to save customizing time.
+        nameCommand['key'] = '`'
+        nameCommand['ctl'] = False
+        nameCommand['alt'] = True
+        nameCommand['mel'] = """
+                            python("MmmmToolsMod.Static.Manipulators.cycleManipXformConstraint()");
+                            """
+        self.namedCommands.append(nameCommand)
+        #End of section to duplicate
+                         
         #This section is meant to be duplicated and altered #
         #Edit the name, key and mel parts#
         nameCommand = {}
