@@ -5,8 +5,13 @@ import traceback
 import random
 import math
 
-
-import SelectorVolumeSelect
+try:
+    reload(SelectorVolumeSelect)
+except:
+    try:
+        import SelectorVolumeSelect
+    except:
+        print( traceback.format_exc() )
 ## Import Volume Select, but:
 ##  can't reload with Maya running, causes api error and crash
 class Selector(object):
@@ -16,8 +21,32 @@ class Selector(object):
         self.slots = {}
         self.quickList = []
         self.activeSlot = 0
+
+        self.randomSelector = RandomSelector()
+        
         #self.volumeSelect = SelectorVolumeSelect.SelectorVolumeSelect
         #self.volumeSelectApp = SelectorVolumeSelect.SelectorVolumeSelectApp
+    
+        self.addToCommander()
+        #### The above, add to commander should be the last command!
+    
+    def addToCommander(self):
+        commander = self.mmmm.commander
+        commander.addCommand( "Selector/NextSlot", self.nextSlot )
+        commander.addCommand( "Selector/PrevSlot", self.prevSlot )
+        commander.addCommand( "Selector/SetSlot", self.setSlot )
+        commander.addCommand( "Selector/SelSlot", self.selSlot )
+        
+        commander.addCommand( "Selector/PrintActiveSlot", self.printActiveSlot )
+        commander.addCommand( "Selector/ShowSlotsUi", self.showSlotsUi )
+        commander.addCommand( "Selector/SetNamedSlotByUi", self.setNamedSlotByUi )
+        commander.addCommand( "Selector/SelNamedSlotByUi", self.selNamedSlotByUi )
+        
+        commander.addCommand( "Selector/VolumeSelect", self.volumeSelect )
+        commander.addCommand( "Selector/RandomSelectorUi", self.runRandomSelectorUi )
+
+        
+        #setNamedSlotByUi selNamedSlotByUi   
 
     def printActiveSlot(self):
         self.mmmm.u.printWarning( "Selector active slot is now: " + str(self.activeSlot)  )
@@ -105,7 +134,7 @@ class Selector(object):
     
     def selNamedSlot( self, name ):
         self.selList( self.slots[name] )
-        
+    
     def setNamedSlotByUi(self):
         name = self.mmmm.prompt( 'Set/Save selection to a named slot.  Enter the name of the slot to use:', )
         if not name is None:
@@ -147,7 +176,11 @@ class Selector(object):
         print( "Volume Select App/Tool/UI current disabled because of a Maya crash bug." )
         #SelectorVolumeSelect.SelectorVolumeSelectApp( make_default_ui=True )
 
-
+    def runRandomSelectorUi( self ):
+        self.randomSelectorUi = RandomSelectorUi(
+            mmmmTools=self.mmmm,
+            randomSelector=self.randomSelector
+        )
         
 
 #### Note, the Ui should probably have a slider, but it doesn't have one yet.
@@ -155,6 +188,8 @@ class RandomSelectorUi(object):
     def __init__(self, mmmmTools=None, randomSelector=None):
         if randomSelector==None:
             self.randomSelector = RandomSelector()
+        else:
+            self.randomSelector = randomSelector
         self.win = pm.window( 'Random Selector' )
         with self.win:
             self.col = pm.columnLayout()

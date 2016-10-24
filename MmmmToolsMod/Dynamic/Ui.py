@@ -360,7 +360,13 @@ class MainMenu(object):
                 #    pm.setParent( self.menu, menu=True )   
                 #    u.log('Going back to parent menu')
                 #else:
-                self.makeMenuItemFromString( item )
+                if isinstance( item, basestring ):
+                    self.makeMenuItemFromString( item )
+                #elif isinstance(item, dict ):
+                #    self.makeMenuItemFromDict( item )
+                    
+
+                
             
             ## This one should go last!  Its the about box
             pm.menuItem( "MmmmToolsHelp", label='MmmmTools Help', annotation='Help not yet available.',command=self.menuHelp )
@@ -369,6 +375,10 @@ class MainMenu(object):
         except:
             u.log("Failed to create MmmmTools main menu.")
 
+    def makeMenuItemFromDict( itemDict ):
+        label = itemDict.Label
+        command = itemDict['command']
+        
             
     def menuOMTSettings(self, state):
         maya.mel.eval('source "OMT_toolboxMenuForMmmm.mel";')
@@ -745,6 +755,16 @@ class Ui(object):
             u.log( "MainMenu could not be created." )
         else:
             self.mainMenu.register()
+            self.addUiFromCommander()
+    
+    def addUiFromCommander(self):
+        commander = self.mmmm.commander
+                    
+        for k,v in commander.uiMenuItems.items():
+            newMenuItem = pm.menuItem(
+                            label=k,
+                            command = v + ';',
+            ) #self[command] )
 
 class UiDialogCreator(object):
     def __init__(self, parent=None):

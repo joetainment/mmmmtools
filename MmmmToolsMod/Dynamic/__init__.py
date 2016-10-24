@@ -201,147 +201,118 @@ To Do - Roadmap and Planning:
             
 """
 
-
 ## Imports from Python Standard Library
-import traceback as traceback
-import sys
-import collections
+import traceback, sys, collections
 ## Imports from Maya
 import pymel.all as pm
 import maya.cmds as cmds
 
 ## Imports from MmmmTools
-import MmmmToolsMod.unipath
-import UtilsMod  #relative in same folderimport MmmmBaker
-import DesignFileLoaderimport PlatformManagerimport Envimport Configurationimport Uiimport Hotkeysimport Hotstringsimport Texturerimport Rendererimport Modelerimport Riggerimport Gamer
-import Scripter
-import Selectorimport Downloader
-import RimLight
-import Renamer
-import SelectTextureBorderEdges
-import AutosaveEnabler
+import UtilsMod  #relative in same folder
 
-import FileTextureReloader
-import HotBoxToggler
-    ####'Threads',
-    ##'CapsDisabler',
-
-"""
-## The next part is a work around to a super annoying Maya python bug
-## because the second time it runs, it imports differently...
-try:
-    try:
-        reload( sys.modules['MmmmToolsMod.Dynamic.Utils'] )
-    except:
-        pass
-    ModUtils = sys.modules['MmmmToolsMod.Dynamic.Utils']
-except:
-    from . import Utils as ModUtils
-Utils = ModUtils.Utils
-UiUtils = ModUtils.UiUtils"""
-
-
-
-
-
-OrderedDict = collections.OrderedDict
-
-UtilsMod
-Utils = UtilsMod.UtilsUiUtils = UtilsMod.UiUtils
-u = U = Utils
-Pather = UtilsMod.Pather
-Pather = UtilsMod.Patheru.log( 'MmmmtoolsMod module about to initialize.' )
-
-try:
-    import PySide.QtCore as Mod_QtCore
-    import PySide.QtGui as Mod_QtGui    
-    try:
-        import MmmmToolsMod.anyapp
-        Mod_anyapp = MmmmToolsMod.anyapp
-        Object_base = Mod_anyapp.Mod_object_base.Object_base
-    
-        class MmmmAnyapp(Mod_anyapp.Mod_app_base.App_base):
-            def __init__(self,*args,**kargs):
-                kargs = self.set_kargs_defaults( kargs, [
-                    [ 'created_through_MmmmTools', True ],
-                    [ 'ui_class', MmmmAnyappUi ],
-                ])    
-                Mod_anyapp.Mod_object_base.Object_base.init_bases(self, *args, **kargs)    
-        class MmmmAnyappUi(Mod_anyapp.Mod_app_base.App_base_ui):
-            def __init__(self,*args,**kargs):
-                kargs = self.set_kargs_defaults( kargs, [
-                    [ 'created_through_MmmmTools', True ],
-                    [ 'ui_parent_window', UiUtils.getMayaWindowAsWrappedInstance() ],
-                ])    
-                Mod_anyapp.Mod_object_base.Object_base.init_bases(self, *args, **kargs)    
-    except:
-        print(  traceback.format_exc()  )
-    
-except:
-    pass   ## unfortunately, there's nothing we can do if PySide isn't available
-
-
-    
-
-    
-    
-
+#### Dynamic Modules Import ################
+############################################
 ## Make a list of which MmmmTools modules will be imported, they will be imported by string name
 ## The order of modules in this list is important
-mmmm_modules_to_import =[
-    #'PlatformManager', ## 1st - make sure paths are calculated 
-    #'Configuration',  ## 2nd - configuration and ini file    
-    #'Env',  ## 3rd - helps platform manager using ini info    
-    #'Hotstrings',
-    #'Ui',
-    #'Downloader',   
-    #'Hotkeys',
-    #'RimLight',
-    #'Renamer',
-    #'SelectTextureBorderEdges',
-    #'AutosaveEnabler',
-    #'Downloader',
-    #'Rigger',
-    #'Modeler',
-    #'Texturer',
-    #'Renderer',
-    #'Gamer',
-    #'SelectTextureBorderEdges',
-    #'FileTextureReloader',
-    #'HotBoxToggler',
+## All these modules are *relatively pathed*
+mmmm_modules_to_import =[    
+    'PlatformManager', ## 1st - make sure paths are calculated 
+    'Configuration',  ## 2nd - configuration and ini file    
+    'Env',  ## 3rd - helps platform manager using ini info 
+    'Commander',
+    
+    'Rigger',
+    'Modeler',
+    'Selector',
+    'Texturer',
+    'Renderer',
+    'Gamer',
+    'Scripter',
+    'Viewer',
+    
+    'Ui', 
+    'Hotstrings',
+    'Hotkeys',
+    'RimLight',
+    'Renamer',
+    'SelectTextureBorderEdges',
+    'AutosaveEnabler',
+
+    'SelectTextureBorderEdges',
+    'FileTextureReloader',
+    'HotBoxToggler',
+    'DesignFileLoader',
+    'Downloader',
     ####'Threads',
-    #'CapsDisabler',
-    #'Scripter',
-    #'Selector',
-    #'Renamer',
-    #'DesignFileLoader',
+    #'CapsDisabler', 
 ]
-
-
-
-## Import modules dynamically.
-## This ensures that exceptions are nicely handled,
-## and also ensures that we can easily reload
-## modules and see any errors given as tracebacks.
+importCode = """
+try:
+    reload(*module*)
+except:
+    try:
+        import *module*
+    except:
+        print( traceback.format_exc() )
+"""
 for m in mmmm_modules_to_import:
-    ## If we already have the module reload it, showing the traceback if it fails
-    if m in globals():
-        try:
-            reload( globals()[m] )  ## This reloads an already loaded module
-        except:
-            u.log( "Could not reload module: ", m  )
-    else:
-        try:
-            ## import the module by name, and get the same named class from the module
-            ## same as:  from MmmmTools.Example import Example
-            mod =__import__('MmmmToolsMod.Dynamic.' + m) ##  Get the MmmmTools module that matches the name m
-            cls = getattr( mod  , m   )   ##  Get the same named class from the module
-            globals()[m] = cls
-        except:
-            u.log( "Could not reload class: ", m )
-            u.log( "(from module:  ", mod)
-            print( traceback.format_exc() )
+    exec( importCode.replace('*module*', m ) , globals(), locals() )
+#### End of Dynamic Modules Import #############################
+################################################################
+    
+    
+    UtilsMod.Utils.log( 'MmmmtoolsMod module about to initialize.' )
+
 
+
+
+
+
+#### Anyapp Imports #########################
+#############################################
+#### Note, this is currently disabled
+#### until proper 2017 support can be added back in.
+# """
+# try:
+    # try:
+        # import PySide.QtCore as Mod_QtCore
+        # import PySide.QtGui as Mod_QtGui    
+    # except:
+        # import PySide2.QtCore as Mod_QtCore
+        # import PySide2.QtGui as Mod_QtGui    
+    
+    # try:
+        # import MmmmToolsMod.anyapp
+        # Mod_anyapp = MmmmToolsMod.anyapp
+        # Object_base = Mod_anyapp.Mod_object_base.Object_base
+    
+        # class MmmmAnyapp(Mod_anyapp.Mod_app_base.App_base):
+            # def __init__(self,*args,**kargs):
+                # kargs = self.set_kargs_defaults( kargs, [
+                    # [ 'created_through_MmmmTools', True ],
+                    # [ 'ui_class', MmmmAnyappUi ],
+                # ])    
+                # Mod_anyapp.Mod_object_base.Object_base.init_bases(self, *args, **kargs)    
+        # class MmmmAnyappUi(Mod_anyapp.Mod_app_base.App_base_ui):
+            # def __init__(self,*args,**kargs):
+                # kargs = self.set_kargs_defaults( kargs, [
+                    # [ 'created_through_MmmmTools', True ],
+                    # [ 'ui_parent_window', UtilsMod.UiUtils.getMayaWindowAsWrappedInstance() ],
+                # ])    
+                # Mod_anyapp.Mod_object_base.Object_base.init_bases(self, *args, **kargs)    
+    # except:
+        # print(  traceback.format_exc()  )
+    
+# except:
+    # pass   ## unfortunately, there's nothing we can do if PySide isn't available
+# """
+#### End of Anyapp Imports #########################
+####################################################
+    
+
+
+    
+    
 
 ####################
 ## Classes
@@ -379,69 +350,24 @@ class MmmmTools(object):
         """
         
         MmmmTools.mmmmToolsInstance = self
-        self.u = u
-        self.utils = u
-        self.uiUtils = UiUtils
+        self.u = UtilsMod.Utils
+        self.utils = self.u
+        self.uiUtils = UtilsMod.UiUtils
         self.designFileLoader = DesignFileLoader
-        self.prompt = UiUtils.prompt  ## comes from imported module
+        self.prompt = UtilsMod.UiUtils.prompt  ## comes from imported module
+                ## Initialize all the different sub systems of the MmmmTools instance        self.platformManager = PlatformManager.PlatformManager(self)        self.configuration = Configuration.Configuration(self)        self.env = Env.Env(self)
         
-        ## we will instantiate all these classes!
-        ##     self attr name         class to instantiate        """
-        classesToInstantiate = [
-            #('platformManager',       PlatformManager.PlatformManager),
-            #('configuration',         Configuration.Configuration),
-            #('env',                   Env.Env),
-            #('ui',                    Ui.Ui),
-            #('downloader',            Downloader.Downloader),
-            #('hotstrings',            Hotstrings.Hotstrings),
-            #('hotkeys',               Hotkeys.Hotkeys),
-            #('rimLight',              RimLight.RimLight),
-            #('renamer',               Renamer.Renamer),
-            #('rigger',                Rigger.Rigger),
-            #('gamer',                 Gamer.Gamer),
-            #('modeler',               Modeler.Modeler),
-            #('texturer',              Texturer.Texturer),
-            #('renderer',              Renderer.Renderer),
-            #('hotboxToggler',         HotBoxToggler.HotBoxToggler),
-            #('capsDisabler',          CapsDisabler.CapsDisabler),
-            #('selectTextureBorderEdges',
-            #    SelectTextureBorderEdges.SelectTextureBorderEdges),
-            #('fileTextureReloader', FileTextureReloader.FileTextureReloader),
-            #('autosaveEnabler',  AutosaveEnabler.AutosaveEnabler),
-            #('scripter', Scripter.Scripter),
-            #('selector', Selector.Selector),
-        ]
+        self.commander = Commander.Commander(self)
         
-        ## For each attribute name  paired with the class, instantiate it
-        ## and attach it to self using setattr
-        ## log errors
-        for v in classesToInstantiate:
-            attr = v[0]  ## attribute name string
-            cls = v[1]  ## class
-            ## **** make this into a more general purpose function!
-            try:
-                try:
-                    try:
-                        it = cls(self) ## instance
-                    except:
-                        u.log(
-                          "Class couldn't be instantiated with "
-                          "parent ref. About to try without parent ref.")
-                        assert 0==1
-                except:
-                    it = cls() ## instance with no parent ref
-            except:
-                it = None
-                u.log( "MmmmTools could not initialize: " + str( cls ) )
-            setattr( self, attr, it )
-        """        ## Initialize all the different sub systems of the MmmmTools instance        self.platformManager = PlatformManager.PlatformManager(self)        self.configuration = Configuration.Configuration(self)        self.env = Env.Env(self)
-        self.ui = Ui.Ui(self)
+        
+        self.ui = Ui.Ui(self)
         self.hotstrings = Hotstrings.Hotstrings(self)
         self.hotkeys = Hotkeys.Hotkeys(self)        self.selector = Selector.Selector(self)        self.rigger = Rigger.Rigger(self)
         self.modeler = Modeler.Modeler(self)
         self.texturer = Texturer.Texturer(self)
         self.renderer = Renderer.Renderer(self)
-        self.scripter = Scripter.Scripter(self)        self.gamer = Gamer.Gamer(self)
+        self.scripter = Scripter.Scripter(self)        self.gamer = Gamer.Gamer(self)        self.viewer = Viewer.Viewer(self)
+        
         self.downloader = Downloader.Downloader(self)
         self.rimLight = RimLight.RimLight(self)
         self.renamer = Renamer.Renamer(self)
@@ -450,11 +376,11 @@ class MmmmTools(object):
         self.hotboxToggler = HotBoxToggler.HotBoxToggler(self)
         self.selectTextureBorderEdges = SelectTextureBorderEdges.SelectTextureBorderEdges(self)
         self.autosaveEnabler = AutosaveEnabler.AutosaveEnabler(self)
-        
+        
         try:
             self.hotkeys.go()
         except:
-            u.log( "Hotkeys could no be started." )
+            self.u.log( "Hotkeys could no be started." )
         
         
     def getInput( self, message="Enter Input", title="Enter Input" ):
@@ -498,5 +424,5 @@ class MmmmTools(object):
         
 def GetInstance():    ## MmmmTools is the class defined in this module    return MmmmTools.mmmmToolsInstance
             
-u.log( 'Mmmmtools module initialization complete.' )
+UtilsMod.Utils.log( 'Mmmmtools module initialization complete.' )
 
