@@ -32,18 +32,19 @@ class Selector(object):
     
     def addToCommander(self):
         commander = self.mmmm.commander
-        commander.addCommand( "Selector/NextSlot", self.nextSlot )
-        commander.addCommand( "Selector/PrevSlot", self.prevSlot )
-        commander.addCommand( "Selector/SetSlot", self.setSlot )
-        commander.addCommand( "Selector/SelSlot", self.selSlot )
+        inMenu = 'Selector'
+        commander.addCommand( "Selector/NextSlot", self.nextSlot, inMenu=inMenu )
+        commander.addCommand( "Selector/PrevSlot", self.prevSlot,inMenu=inMenu )
+        commander.addCommand( "Selector/SetSlot", self.setSlot,inMenu=inMenu )
+        commander.addCommand( "Selector/SelSlot", self.selSlot,inMenu=inMenu )
         
-        commander.addCommand( "Selector/PrintActiveSlot", self.printActiveSlot )
-        commander.addCommand( "Selector/ShowSlotsUi", self.showSlotsUi )
-        commander.addCommand( "Selector/SetNamedSlotByUi", self.setNamedSlotByUi )
-        commander.addCommand( "Selector/SelNamedSlotByUi", self.selNamedSlotByUi )
+        commander.addCommand( "Selector/PrintActiveSlot", self.printActiveSlot,inMenu=inMenu )
+        commander.addCommand( "Selector/ShowSlotsUi", self.showSlotsUi,inMenu=inMenu )
+        commander.addCommand( "Selector/SetNamedSlotByUi", self.setNamedSlotByUi,inMenu=inMenu )
+        commander.addCommand( "Selector/SelNamedSlotByUi", self.selNamedSlotByUi,inMenu=inMenu )
         
-        commander.addCommand( "Selector/VolumeSelect", self.volumeSelect )
-        commander.addCommand( "Selector/RandomSelectorUi", self.runRandomSelectorUi )
+        commander.addCommand( "Selector/VolumeSelect", self.volumeSelect,inMenu=inMenu )
+        commander.addCommand( "Selector/RandomSelectorUi", self.runRandomSelectorUi,inMenu=inMenu )
 
         
         #setNamedSlotByUi selNamedSlotByUi   

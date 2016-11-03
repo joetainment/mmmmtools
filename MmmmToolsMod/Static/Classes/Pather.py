@@ -6,7 +6,7 @@ class Pather(object):
         return str(self)
     @property
     def str_(self):
-        return str(self)
+        return str(self)        @property    def stStdSep( self ):        st = str(self)        return st.replace('\\','/')
     
     def __init__(self, upath=None, relative_to=None):
         if upath is None:
@@ -93,7 +93,7 @@ class Pather(object):
         #print( type(new_pather.upath) )
         return new_pather    
         
-        
+       
     def __str__(self):
         return str( self.upath.absolute() )
         

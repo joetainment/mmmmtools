@@ -90,6 +90,7 @@ class ModelerMirrorerUi(object):
         self.parentRef = parentRef
         self.buttons = []
         self.layoutsR = []
+        self.widgets = {}
         
         if parentWidget==None:
             parentWidget = self.widgets['parentWidget'] = pm.window(

@@ -64,7 +64,9 @@ class ModelerRetoper(object):
       if setReferenceImmediately==True:
           self.setReference()
 
-          
+  def selectReference(self):
+      pm.select( self.referenceXformNode )
+  
   def makeReferenceLive( self ):
       pm.makeLive( self.referenceXformNode )
       
@@ -151,6 +153,10 @@ class ModelerRetoperUi(object):
                 btn__setReference = pm.Button ( label = 'Set Reference Mesh',parent = self.layout,
                             command = lambda xc: self.parentRef.setReference()  )
                 self.buttons.append( btn__setReference )
+                
+                btn__selectReference = pm.Button ( label = 'Select Reference',parent = self.layout,
+                            command = lambda xc: self.parentRef.selectReference()  )
+                self.buttons.append( btn__selectReference )
                 
                 btn__makeReferenceLive = pm.Button ( label = 'Make Reference Live',parent = self.layout,
                             command = lambda xc: self.parentRef.makeReferenceLive()  )

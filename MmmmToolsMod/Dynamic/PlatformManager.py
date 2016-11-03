@@ -117,6 +117,7 @@ class PlatformManager(object):
                 'MmmmToolsMod'
             )
         self.info.mmmm_path_str = m.st
+        self.info.mmmm_path = m
 
     def getFullInfoString(self, repr=False):
         st = ""

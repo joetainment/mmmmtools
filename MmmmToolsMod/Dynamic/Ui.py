@@ -190,12 +190,13 @@ class MainMenu(object):
                     #mi = lambda x(y): self.makeMenuItem( label=y )
                 
                     ## md will make dividers
-                    #md = lambda x: pm.menuItem(divider=True)
-                
+                    #md = lambda x: pm.menuItem(divider=True)    
             
             ## Put a bunch of strings in a list
             ## which will be used to make menu items
             items = [
+                #'MmmmTools Dockable UI...',
+                #'div',
                 'Save Incrementally',
                 'Set Project By Pasting Or Typing',
                 'div',
@@ -364,10 +365,86 @@ class MainMenu(object):
                     self.makeMenuItemFromString( item )
                 #elif isinstance(item, dict ):
                 #    self.makeMenuItemFromDict( item )
+            ## Set back to standard menu
+            pm.setParent( self.menu, menu=True )            
+            
+            
+            ## Prepare to make make menus via commander
+            commander = self.mmmm.commander
+            cmdEntries = commander.entries
+
+
+            
+            #### Make Developer Menu
+            developerMenu = pm.menuItem( label='MmmmTools Developer...', sm=True, tearOff=True, allowOptionBoxes=True )
+            self.submenus['developerMenu']=developerMenu
+            pm.setParent( developerMenu, menu=True )
+            for name, entry in cmdEntries.items():
+                inMenu = entry['inMenu']
+                print( name )
+                if inMenu==True or inMenu=='Developer':
+                    print( "in menu name is:")
+                    print( entry['name'] )
+                    uiLabel = entry.get( 'uiLabel' )
+                    if uiLabel==None:
+                        uiLabel = name
+                    pm.menuItem( label=uiLabel,
+                        command='mmmmTools.commander.commands["' + name + '"]()',
+                    )
+                    
+            
+            commander = self.mmmm.commander
+            cmdEntries = commander.entries
+            
+            pm.setParent( developerMenu, menu=True )
+            modelerMenu = self.submenus['modeler'] = pm.menuItem(
+                label='Modeler (dev)...', sm=True, tearOff=True,
+                allowOptionBoxes=True
+            )
+            pm.setParent( modelerMenu, menu=True )
+            for name, entry in cmdEntries.items():
+                inMenu = entry.inMenu
+                if inMenu=='Modeler':
+                    uiLabel = entry.get( 'uiLabel' )
+                    if uiLabel==None:
+                        uiLabel = name
+                    pm.menuItem( label=uiLabel,
+                        command='mmmmTools.commander.commands["' + name + '"]()',
+                    )
+                    
+            pm.setParent( developerMenu, menu=True )
+            selectorMenu = self.submenus['selector'] = pm.menuItem(
+                label='Selector (dev)...', sm=True, tearOff=True,
+                allowOptionBoxes=True
+            )
+            pm.setParent( selectorMenu, menu=True )
+            for name, entry in cmdEntries.items():
+                inMenu = entry.inMenu
+                if inMenu=='Selector':
+                    uiLabel = entry.get( 'uiLabel' )
+                    if uiLabel==None:
+                        uiLabel = name
+                    pm.menuItem( label=uiLabel,
+                        command='mmmmTools.commander.commands["' + name + '"]()',
+                    )
+                    
+                    
                     
 
-                
-            
+            pm.menuItem( divider=True )
+                               
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                        
+            pm.setParent( self.menu, menu=True )    
+            pm.menuItem( divider=True )    
+            pm.menuItem( divider=True )
+            pm.menuItem( divider=True )
             ## This one should go last!  Its the about box
             pm.menuItem( "MmmmToolsHelp", label='MmmmTools Help', annotation='Help not yet available.',command=self.menuHelp )
             pm.menuItem( "MmmmToolsAbout", label='About MmmmTools', command=self.menuAbout )
@@ -379,53 +456,54 @@ class MainMenu(object):
         label = itemDict.Label
         command = itemDict['command']
         
-            
-    def menuOMTSettings(self, state):
+    def menuMmmmToolsDockableUI(self, state=None):
+        self.mmmmTools.uiDockable.create()
+    def menuOMTSettings(self, state=None):
         maya.mel.eval('source "OMT_toolboxMenuForMmmm.mel";')
         maya.mel.eval("OMT_toolManageInterface()")
-    def menuOMTConnectComponents(self, state):
+    def menuOMTConnectComponents(self, state=None):
         maya.mel.eval("OMT_to_connectComponents()")
-    def menuOMTScalePosition(self, state):
+    def menuOMTScalePosition(self, state=None):
         maya.mel.eval("OMT_to_scalePosition()")
-    def menuOMTSelectElement(self, state):
+    def menuOMTSelectElement(self, state=None):
         maya.mel.eval("OMT_to_selectElement()")
-    def menuOMTSelectionDragger(self, state):
+    def menuOMTSelectionDragger(self, state=None):
         maya.mel.eval("OMT_to_selectionDragger()")
-    def menuOMTSelectionDraggerOptions(self, state):
+    def menuOMTSelectionDraggerOptions(self, state=None):
         maya.mel.eval('source "OMT_to_selectionDragger.mel";')
         maya.mel.eval("OMT_to_selectionDraggerOptWin();")
-    def menuOMTSelectLoop(self, state):
+    def menuOMTSelectLoop(self, state=None):
         maya.mel.eval("OMT_to_selectLoop()")
-    def menuOMTSelectOutline(self, state):
+    def menuOMTSelectOutline(self, state=None):
         maya.mel.eval("OMT_to_selectOutline()")
-    def menuOMTSelectOutlineOptions(self, state):
+    def menuOMTSelectOutlineOptions(self, state=None):
         maya.mel.eval('source "OMT_to_selectOutline.mel";')
         maya.mel.eval("OMT_to_selectOutlineOptWin();")
-    def menuOMTSelectRing(self, state):
+    def menuOMTSelectRing(self, state=None):
         maya.mel.eval("OMT_to_selectRing()")
-    def menuOMTSpinEdge(self, state):
+    def menuOMTSpinEdge(self, state=None):
         maya.mel.eval("OMT_to_spinEdge()")
-    def menuOMTSplitAroundSelection(self, state):
+    def menuOMTSplitAroundSelection(self, state=None):
         maya.mel.eval("OMT_to_splitAroundSelection()")
-    def menuOMTSplitLoop(self, state):
+    def menuOMTSplitLoop(self, state=None):
         maya.mel.eval("OMT_to_splitLoop()")
-    def menuOMTXrayToggle(self, state):
+    def menuOMTXrayToggle(self, state=None):
         maya.mel.eval("extras_to_xrayToggle()")        
  
-    def menuSaveIncrementally(self, state):
+    def menuSaveIncrementally(self, state=None):
         self.mmmmTools.u.saveIncrementally()
-    def menuSetProjectByPastingOrTyping(self, state):
+    def menuSetProjectByPastingOrTyping(self, state=None):
         self.mmmmTools.uiUtils.setProjectByStringUi()
         
         
                               
-    def menuSelectorStoreSelectionToSlot(self, state):
+    def menuSelectorStoreSelectionToSlot(self, state=None):
         self.mmmmTools.selector.setSlot() 
-    def menuSelectorSelectFromSlotsSelection(self, state):
+    def menuSelectorSelectFromSlotsSelection(self, state=None):
         self.mmmmTools.selector.selSlot() 
-    def menuSelectorPreviousSlot(self, state):
+    def menuSelectorPreviousSlot(self, state=None):
         self.mmmmTools.selector.prevSlot() 
-    def menuSelectorNextSlot(self, state):
+    def menuSelectorNextSlot(self, state=None):
         self.mmmmTools.selector.nextSlot() 
     def menuSelectorSetAndSaveNamedSlotByName(self,state):
         self.mmmmTools.selector.setNamedSlotByUi() 
@@ -443,41 +521,41 @@ class MainMenu(object):
         
 
         
-    def menuModelerSplitPolygonTool(self, state):
+    def menuModelerSplitPolygonTool(self, state=None):
         self.mmmmTools.modeler.activateSplitPolygonTool() 
         
-    def menuModelerSelectHardEdges(self, state):
+    def menuModelerSelectHardEdges(self, state=None):
         self.mmmmTools.modeler.selectHardEdges()         
-    def menuModelerSelectCreasedEdges(self, state):
+    def menuModelerSelectCreasedEdges(self, state=None):
         self.mmmmTools.modeler.selectCreasedEdges()
         
-    def menuModelerSelectNonQuads(self, state):
-        self.mmmmTools.modeler.runSelector( makeUi = False ) 
-    def menuModelerSelectTris(self, state):
-        self.mmmmTools.modeler.runSelector( makeUi = False, trisOnly=True ) 
-    def menuModelerSelectNGons(self, state):
-        self.mmmmTools.modeler.runSelector( makeUi = False, ngonsOnly=True ) 
-    def menuModelerSelectQuads(self, state):
-        self.mmmmTools.modeler.runSelector( makeUi = False, quadsOnly=True ) 
+    def menuModelerSelectNonQuads(self, state=None):
+        self.mmmmTools.modeler.selectNonQuads()
+    def menuModelerSelectTris(self, state=None):
+        self.mmmmTools.modeler.selectTris()
+    def menuModelerSelectNGons(self, state=None):
+        self.mmmmTools.modeler.selectNgons()
+    def menuModelerSelectQuads(self, state=None):
+        self.mmmmTools.modeler.selectQuads()
        
         
-    def menuModelerVertexAligner(self, state):
+    def menuModelerVertexAligner(self, state=None):
         self.mmmmTools.modeler.runAligner( ) 
-    def menuModelerPropagateEdgeHardnessOn(self, state):
+    def menuModelerPropagateEdgeHardnessOn(self, state=None):
         self.mmmmTools.modeler.propagateEdgeHardnessOn() 
-    def menuModelerPropagateEdgeHardnessOff(self, state):
+    def menuModelerPropagateEdgeHardnessOff(self, state=None):
         self.mmmmTools.modeler.propagateEdgeHardnessOff() 
-    def menuModelerCreaseSelectedEdges(self, state):
+    def menuModelerCreaseSelectedEdges(self, state=None):
         self.mmmmTools.modeler.creaseSelectedEdges() 
-    def menuModelerUncreaseSelectedEdges(self, state):
+    def menuModelerUncreaseSelectedEdges(self, state=None):
         self.mmmmTools.modeler.uncreaseSelectedEdges()
-    def menuModelerCreaseAndHardenSelectedEdges(self, state):
+    def menuModelerCreaseAndHardenSelectedEdges(self, state=None):
         self.mmmmTools.modeler.creaseSelectedEdges()
         pm.polySoftEdge( angle=0.0 )
-    def menuModelerUncreaseAndSoftenSelectedEdges(self, state):
+    def menuModelerUncreaseAndSoftenSelectedEdges(self, state=None):
         self.mmmmTools.modeler.uncreaseSelectedEdges()
         pm.polySoftEdge( angle=180.0 )
-    def menuModelerCenterPivotOnComponents(self, state):
+    def menuModelerCenterPivotOnComponents(self, state=None):
         self.mmmmTools.modeler.centerPivotOnComponents() 
         
     def menuModelerZeroPivotDeleteHistoryFreezeXformsWS(self, state ):
@@ -485,24 +563,24 @@ class MainMenu(object):
         m.pivotToZeroDeleteHistoryAndFreezeTransformsInWorldSpace()
 
         
-    def menuModelerMrClean(self, state):
+    def menuModelerMrClean(self, state=None):
         self.mmmmTools.modeler.runMrClean()
-    def menuModelerMirrorTools(self, state):
+    def menuModelerMirrorTools(self, state=None):
         self.mmmmTools.modeler.runMirrorer()
-    def menuModelerGridTools(self, state):
+    def menuModelerGridTools(self, state=None):
         self.mmmmTools.modeler.runGridTools( )
-    def menuModelerRetopologyTools(self, state):
+    def menuModelerRetopologyTools(self, state=None):
         self.mmmmTools.modeler.runRetoper( makeUi=True )
 
         
            
-    def menuTexturerReloadTextures(self, state):
+    def menuTexturerReloadTextures(self, state=None):
         self.mmmmTools.texturer.reloadTextures( )
-    def menuTexturerShowSeams(self, state):
+    def menuTexturerShowSeams(self, state=None):
         self.mmmmTools.texturer.toggleSeams( )
-    def menuTexturerSelectSeams(self, state):
+    def menuTexturerSelectSeams(self, state=None):
         self.mmmmTools.texturer.selectSeams( ) 
-    def menuTexturerRoadkill(self, state):
+    def menuTexturerRoadkill(self, state=None):
         self.mmmmTools.texturer.roadkill( )
     def menuTexturerUVXformsTool(self,state):
         self.mmmmTools.texturer.runUvXformsTool()
@@ -520,7 +598,7 @@ class MainMenu(object):
         self.mmmmTools.texturer.unfold3dMultipleObjects()
 
         
-    def menuTexturerFileTextureManager(self, state):
+    def menuTexturerFileTextureManager(self, state=None):
         try:
             maya.mel.eval('FileTextureManager();')
         except:
@@ -528,7 +606,7 @@ class MainMenu(object):
 
 
         
-    def menuRendererShowHypershadeMIPShaders(self, state):
+    def menuRendererShowHypershadeMIPShaders(self, state=None):
         self.mmmmTools.renderer.runProductionShadersMaker()  ## This used to actually make shaders, now it just enables them to be shown in the hypershade.
         
         
@@ -540,32 +618,32 @@ class MainMenu(object):
         self.mmmmTools.renderer.setVrayTextureToLinear()    
         
         
-    def menuRiggerReplaceObjects(self, state):
+    def menuRiggerReplaceObjects(self, state=None):
         self.mmmmTools.rigger.replaceObjects() 
-    def menuRiggerPivotFix(self, state):
+    def menuRiggerPivotFix(self, state=None):
         self.mmmmTools.rigger.pivotFix()  
-    def menuRiggerMoveUpInHierarchy(self, state):
+    def menuRiggerMoveUpInHierarchy(self, state=None):
         self.mmmmTools.rigger.moveUpInHierarchy()
-    def menuRiggerAlignThenConstrainXforms(self, state):
+    def menuRiggerAlignThenConstrainXforms(self, state=None):
         self.mmmmTools.rigger.alignThenConstrain()        
-    def menuRiggerAlignXforms(self, state):
+    def menuRiggerAlignXforms(self, state=None):
         self.mmmmTools.rigger.align()        
-    def menuRiggerConstrainXforms(self, state):
+    def menuRiggerConstrainXforms(self, state=None):
         self.mmmmTools.rigger.constrain() 
-    def menuRiggerZero(self, state):
+    def menuRiggerZero(self, state=None):
         self.mmmmTools.rigger.zero()
-    def menuRiggerMakePoleVector(self, state):
+    def menuRiggerMakePoleVector(self, state=None):
         self.mmmmTools.rigger.makePoleVector()
-    def menuRiggerJointOrientHelper(self, state):
+    def menuRiggerJointOrientHelper(self, state=None):
         self.mmmmTools.rigger.runJointOrientHelper()
-    def menuRiggerCreateRivets(self, state):
+    def menuRiggerCreateRivets(self, state=None):
         self.mmmmTools.rigger.runRiveter()
-    def menuRiggerAttributeSetter(self, state):
+    def menuRiggerAttributeSetter(self, state=None):
         self.mmmmTools.rigger.runAttributeSetter()
-    def menuRiggerAttributeConnector(self, state):
+    def menuRiggerAttributeConnector(self, state=None):
         self.mmmmTools.rigger.runAttributeConnector()
-    def menuRiggerRenameByRegularExpression(self, state):
-        self.mmmmTools.rigger.runRenameByRegex()    def menuRiggerCreateTwistJointToSelectedChild(self, state):
+    def menuRiggerRenameByRegularExpression(self, state=None):
+        self.mmmmTools.rigger.runRenameByRegex()    def menuRiggerCreateTwistJointToSelectedChild(self, state=None):
         MmmmToolsMod.Static.Joints.createTwistJointToSelectedChild()
 
     def menuGamerMakeUCXObjectsAndParentToLastSelectedObject(self,state):
@@ -578,14 +656,14 @@ class MainMenu(object):
         
 
 
-    def menuGamerFBXExportSelection(self, state):
+    def menuGamerFBXExportSelection(self, state=None):
         self.mmmmTools.gamer.runGamerFbxExportSelection()
-    def menuGamerFBXExportAll(self, state):
+    def menuGamerFBXExportAll(self, state=None):
         self.mmmmTools.gamer.runGamerFbxExportAll()
         
-    def menuScripterEditor(self, state):
+    def menuScripterEditor(self, state=None):
         self.mmmmTools.scripter.runScripterEditor()
-    def menuScripterRunScriptsFromSelection(self, state):
+    def menuScripterRunScriptsFromSelection(self, state=None):
         self.mmmmTools.scripter.runScriptsFromSelection()
     def menuScripterConnectToAttributeArrayByTypingName(self,state):
         self.mmmmTools.scripter.connectToAttributeArray()
@@ -607,62 +685,62 @@ class MainMenu(object):
         self.mmmmTools.scripter.runMelToPythonConverterUi()     
         
         
-    def menuEnableMmmmTools(self, state):
+    def menuEnableMmmmTools(self, state=None):
         if state == 0:
             self.conf.mmmmToolsEnabled = state
         elif state == 1:
             self.conf.mmmmToolsEnabled = state             
 
-    def menuHotstringWindow(self, state):
+    def menuHotstringWindow(self, state=None):
         self.mmmmTools.hotstrings.go()           
         
     ##  Autoback is no longer used in Maya 2011 because autodesk added their own
-    #def menuAutobackSettings(self, state):
+    #def menuAutobackSettings(self, state=None):
     #    self.ui.popupWindowAutobackSettings()
         
-    def menuRendererCreateRimLight(self, state):
+    def menuRendererCreateRimLight(self, state=None):
         self.mmmmTools.rimLight.create()
-    def menuRendererCreateOccludedAmbientLight(self, state):
+    def menuRendererCreateOccludedAmbientLight(self, state=None):
         print( "This function is not yet available.")
-    def menuRendererAdjustLighting(self, state):
+    def menuRendererAdjustLighting(self, state=None):
         self.mmmmTools.renderer.runLightsMultiplier()
-    def menuRendererReflectivityOfSelectedMaterialsToZero(self, state):
+    def menuRendererReflectivityOfSelectedMaterialsToZero(self, state=None):
          self.mmmmTools.renderer.reflectivityOfSelectedMaterialsToZero()
-    def menuRendererRenderAnimationInteractively(self, state):
+    def menuRendererRenderAnimationInteractively(self, state=None):
         print( "This function is not yet available.")
-    def menuRendererEnableHypergraphThumbnails(self, state):
+    def menuRendererEnableHypergraphThumbnails(self, state=None):
         self.mmmmTools.renderer.setHypershadeThumbnailsEnabled( enabled=True )
-    def menuRendererDisableHypergraphThumbnails(self, state):
+    def menuRendererDisableHypergraphThumbnails(self, state=None):
         self.mmmmTools.renderer.setHypershadeThumbnailsEnabled( enabled=False )
-    def menuRendererExposeMIPShadersRestartRequired(self, state):
+    def menuRendererExposeMIPShadersRestartRequired(self, state=None):
         self.mmmmTools.renderer.setMipShadersEnabled( enabled=True )
-    def menuRendererDoNotExposeMIPShadersRestartRequired(self, state):
+    def menuRendererDoNotExposeMIPShadersRestartRequired(self, state=None):
         self.mmmmTools.renderer.setMipShadersEnabled( enabled=False )
         
 
 
-    def menuSelectTextureBorderEdges(self, state):
+    def menuSelectTextureBorderEdges(self, state=None):
         try:
             self.mmmmTools.selectTextureBorderEdges.selectTextureBorderEdges()
         except:
             traceback.print_exc()
         
-    def menuRoadKill(self, state):   ## This should be moved elsewhere, perhaps into the autoscripts module?
+    def menuRoadKill(self, state=None):   ## This should be moved elsewhere, perhaps into the autoscripts module?
         pass
             
-    def menuReloadTextures(self, state):   ## This should be moved elsewhere, perhaps into the autoscripts module?
+    def menuReloadTextures(self, state=None):   ## This should be moved elsewhere, perhaps into the autoscripts module?
         try:
             self.mmmmTools.fileTextureReloader.reload()
         except:
             traceback.print_exc()
             
             
-    def menuHKLocalToolsDownloaded(self, state):   ## This should be moved elsewhere, perhaps into the autoscripts module?
+    def menuHKLocalToolsDownloaded(self, state=None):   ## This should be moved elsewhere, perhaps into the autoscripts module?
         try:
             maya.mel.eval('HKLTOptionBox();')
         except:
             traceback.print_exc()
-    def menuProgressiveRenderingDownloaded(self, state):   ## This should be moved elsewhere, perhaps into the autoscripts module?
+    def menuProgressiveRenderingDownloaded(self, state=None):   ## This should be moved elsewhere, perhaps into the autoscripts module?
         try:
             maya.mel.eval('source "k_progressiveRendering"; k_progressiveRendering();')
         except:
@@ -673,58 +751,58 @@ class MainMenu(object):
             # """source "C:/Users/Public/Pixologic/GoZApps/Maya/GoZBrushFromMaya.mel";"""
         # )
         
-    def menuSaveUserHotkeys(self, state):
+    def menuSaveUserHotkeys(self, state=None):
         if int(  self.ini.getItem("enable_hotkeys")  ) == 1:
             self.mmmmTools.hotkeys.saveHotkeys()
         
-    def menuRestoreEarlierSavedHotkeys(self, state):
+    def menuRestoreEarlierSavedHotkeys(self, state=None):
         if int(  self.ini.getItem("enable_hotkeys")  ) == 1:
             self.mmmmTools.hotkeys.goBackToOlderHotkeys()
         
-    def menuSetHotkeysToUserDefaults(self, state):
+    def menuSetHotkeysToUserDefaults(self, state=None):
         if int(  self.ini.getItem("enable_hotkeys")  ) == 1:
             self.mmmmTools.hotkeys.setHotkeysToDefaults()
         
-    def menuSetHotkeysToFactoryDefaults(self, state):
+    def menuSetHotkeysToFactoryDefaults(self, state=None):
         if int(  self.ini.getItem("enable_hotkeys")  ) == 1:
             self.mmmmTools.hotkeys.setHotkeysToDefaultsNoUserHotkeys()
         
-    def menuSetHotkeysToPolygons(self, state):
+    def menuSetHotkeysToPolygons(self, state=None):
         if int(  self.ini.getItem("enable_hotkeys")  ) == 1:
             self.mmmmTools.hotkeys.setHotkeysToPolygons()
         
-    def menuSetHotkeysToUVs(self, state):
+    def menuSetHotkeysToUVs(self, state=None):
         if int(  self.ini.getItem("enable_hotkeys")  ) == 1:
             self.mmmmTools.hotkeys.setHotkeysToUvs()
         
-    def menuSetHotkeysToRendering(self, state):
+    def menuSetHotkeysToRendering(self, state=None):
         if int(  self.ini.getItem("enable_hotkeys")  ) == 1:
             self.mmmmTools.hotkeys.setHotkeysToRendering()
             
 
-    def menuEnableAutosave(self, state):
+    def menuEnableAutosave(self, state=None):
         self.mmmmTools.autosaveEnabler.go()
 
     ## Functions that bring up dialog windows from dialogger
-    def menuDisableCapslock(self, state):
+    def menuDisableCapslock(self, state=None):
         self.mmmmTools.capsDisabler.disableCapslock()
         self.ui.dialogger.popupWindowDisableCapslock()
         
-    def menuHelp(self, state):
+    def menuHelp(self, state=None):
         self.ui.dialogger.popupWindowHelp()
         
-    def menuAbout(self, state):
+    def menuAbout(self, state=None):
         self.ui.dialogger.popupWindowAbout()
 
-    def menuActivateHotkeyManager(self, state):
+    def menuActivateHotkeyManager(self, state=None):
         self.ui.dialogger.popupWindowActivateHotkeyManager()    
 
-    def menuAboutTheOpenMayaToolbox(self, state):
+    def menuAboutTheOpenMayaToolbox(self, state=None):
         self.ui.dialogger.popupWindowOMT()
-    #def menuOMTCullingToggle(self, state):
+    #def menuOMTCullingToggle(self, state=None):
         #maya.mel.eval("extras_to_toggleCulling()")
 
-    def menuDownloadExtraScripts(self, state):   ## This should be moved elsewhere, perhaps into the autoscripts module?
+    def menuDownloadExtraScripts(self, state=None):   ## This should be moved elsewhere, perhaps into the autoscripts module?
         self.ui.dialogger.popupWindowDownloadScriptsConfirm()
         
         
@@ -759,12 +837,14 @@ class Ui(object):
     
     def addUiFromCommander(self):
         commander = self.mmmm.commander
-                    
-        for k,v in commander.uiMenuItems.items():
-            newMenuItem = pm.menuItem(
-                            label=k,
-                            command = v + ';',
-            ) #self[command] )
+        # Not implemented yet
+        #          
+        #for name, entry in commander.entries.items():
+        #
+        #    newMenuItem = pm.menuItem(
+        #                    label=k,
+        #                    command = v + ';',
+        #    ) #self[command] )
 
 class UiDialogCreator(object):
     def __init__(self, parent=None):
@@ -874,12 +954,12 @@ class UiDialogCreator(object):
         
         cmds.showWindow() 
         
-    #def downloadScripts(self, state):
+    #def downloadScripts(self, state=None):
     #    self.mmmmTools.downloader.download()
     #    cmds.deleteUI( self.downloadScriptsConfirmWindow )
     #    self.popupWindowPleaseRestartMaya()
     
-    def downloadScripts(self, state):
+    def downloadScripts(self, state=None):
         self.mmmm.downloader.download()
         cmds.deleteUI( self.downloadScriptsConfirmWindow )
         self.popupWindowPleaseRestartMaya()
@@ -973,7 +1053,7 @@ class UiDialogCreator(object):
         cmds.showWindow()          
         
     
-    def popupWindowActivateHotkeyManagerConfirmed(self, state):
+    def popupWindowActivateHotkeyManagerConfirmed(self, state=None):
         ## **** This functionality should get moved into the hotkey
         ##      module itself
         self.ini.setItem("enable_hotkeys", "1")

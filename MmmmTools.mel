@@ -1,0 +1,8 @@
+python("print 'About to start importing MmmmTools  (this message is from userSetup.mel)'");
+python("print '(the T_Error msgs here can be safely ignored, they are from Maya/MmmmTools internals)'");
+python("import pymel.all as pm");
+python("import MmmmToolsMod");
+python("mmmmTools = MmmmToolsMod.Dynamic.MmmmTools()");
+python("print 'Done importing MmmmTools  (this message is from userSetup.mel)'");
+python("print '\\n \\n \\n'");
+

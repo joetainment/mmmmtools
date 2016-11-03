@@ -264,7 +264,7 @@ class Hotkeys(object):
             self.applyHotkeysPress2015AndEarlier()
             
             
-    def applyHotkeysPress2016AndLater(self):     
+    def applyHotkeysPress2016AndLater(self):
             for i in self.namedCommands:
                 
                 ## Determine which modifiers are being used. (Because Maya is already naturally

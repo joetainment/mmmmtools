@@ -33,6 +33,7 @@ binaries which wouldn't normally be searched for and found by Maya.
 import sys
 import os
 import shutil
+import traceback
 
 import maya.cmds as cmds
 import maya.mel
@@ -185,26 +186,70 @@ class Env(object):
                 if os.path.isdir( ff.st ):
                     mList.append(ff)
                     mListStr = mListStr + ff.st + ';'
+                    if 'autoscripts' in ff.st:
+                        sys.path.append( ff.st )
+                        #print( ff.st )
+                        userSetupMelPather = ff + 'userSetup.mel'
+                        userSetupPyPather = ff + 'userSetup.py'
+                        isUserSetupMel = (
+                            os.path.isfile( userSetupMelPather.st )
+                            or
+                            os.path.islink( userSetupMelPather.st )
+                        )
+                        isUserSetupPy = (
+                            os.path.isfile( userSetupPyPather.st )
+                            or
+                            os.path.islink( userSetupPyPather.st )
+                        )
+                        if isUserSetupMel:
+                            try:
+                                toSource = userSetupMelPather.st.replace('\\','/')
+                                pm.mel.eval( 'source "' + toSource + '";' )
+                                del toSource
+                            except:
+                                print( traceback.format_exc() )
+                            print( " " )
+                        ## We can't import userSetup.py *properly* because they'd add be
+                        ## the same module names and python has no good mechanism
+                        ## for using modules imported from absolute paths
+                        ##
+                        ## the closest we can do is run the code from import
+                        ## this is likely to be failure prone and will likely give conflicts
+                        ## normally this probably shouldn't be used
+                        if isUserSetupPy:
+                            with open (userSetupPyPather.stStdSep, "r") as fh:
+                                code=fh.read()
+                            try:
+                                exec( code )
+                            except:
+                                print( traceback.format_exc() )
+                            print( " " )
+                            
+                ## **** Consider adding code here to loop through each immediate
+                ##  subfolder of the subscripts path, and consider writing something
+                ##  to loop through each of their user setups
+                mListStrSlashes = mListStr.replace('\\','/')
+                pm.mel.eval( 'putenv "MAYA_SCRIPT_PATH" ' + '"' + mListStrSlashes + '"' + ';')
+                
+                ## We need to rehash the script path, otherwise mel won't find the
+                ##  newly added paths
+                pm.mel.eval('rehash;')                          
+                            
+            print( "\n\n" )  ## print a couple empty lines so later print statements
+                             ## don't end up grouped with autoscripts
+
+
         
-        ## **** Consider adding code here to loop through each immediate
-        ##  subfolder of the subscripts path, and consider writing something
-        ##  to loop through each of their user setups
-        mListStrSlashes = mListStr.replace('\\','/')
-        pm.mel.eval( 'putenv "MAYA_SCRIPT_PATH" ' + '"' + mListStrSlashes + '"' + ';')
-        
-        ## We need to rehash the script path, otherwise mel won't find the
-        ##  newly added paths
-        pm.mel.eval('rehash;')
-        
-        ## Run the user setup files from all the folder in mList, which
+        ## Depreciated, code moved to above section...
+        ##      Run the user setup files from all the folder in mList, which
         ##      should be the subscripts and autoscripts
-        for d in mList:
-            p_userSetup = d + conf.userSetup_str
-            if os.path.isfile(p_userSetup.st):
-                try:
-                    pm.mel.eval( 'source "' + userSetupFile.st + '"' + ';' )
-                except:
-                    pass
+        #for d in mList:
+        #    p_userSetup = d + conf.userSetup_str
+        #    if os.path.isfile(p_userSetup.st):
+        #        try:
+        #            pm.mel.eval( 'source "' + userSetupFile.st + '"' + ';' )
+        #        except:
+        #            pass
         
         ## Place information about paths found into platformManager
         immmm.subscripts_pather = \

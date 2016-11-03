@@ -181,15 +181,17 @@ class Utils(object):
         """
         )           
     
-    ## Crease Edges Functions
+    ## Crease Edges Functions #### DeprecationWarning - use version in Static.Mesh
+    #### DeprecationWarning - use version in Static.Mesh
     @classmethod
     def creaseSelectedEdges(cls):
         cls.setCreaseValueOnSelection( 20.0 )
-        
+    #### DeprecationWarning - use version in Static.Mesh        
     @classmethod
     def uncreaseSelectedEdges(cls):
         cls.setCreaseValueOnSelection( 0.0 )
-                
+    
+    #### DeprecationWarning - use version in Static.Mesh
     @staticmethod
     def setCreaseValueOnSelection( v ):
         objs = pm.ls(selection=True) ## removed flatten=True because it makes it crazy slow
@@ -214,7 +216,7 @@ class Utils(object):
             
 
         pm.hyperGraph( edName, edit=True, showShapes=newShowShapesValue )
-            
+    #### DeprecationWarning - use version in Static.Mesh        
     @staticmethod
     def convertSelectionToCreasedEdges():
         pm.mel.eval( "ConvertSelectionToEdges;" )
@@ -238,7 +240,7 @@ class Utils(object):
         else:
             pm.select( clear=True )
     
-    
+    #### DeprecationWarning - use version in Static.Mesh        
     @staticmethod
     def convertSelectionToHardEdges():
         pm.mel.eval( "ConvertSelectionToEdges;" )
@@ -249,6 +251,7 @@ class Utils(object):
                 to_select.append( cmp )
         pm.select( to_select )
     
+    #### DeprecationWarning - use version in Static        
     @staticmethod
     def setAttributeOnSelected( attrName, v ):
         objs = pm.ls(selection=True, flatten=True)

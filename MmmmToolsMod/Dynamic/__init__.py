@@ -230,7 +230,7 @@ mmmm_modules_to_import =[
     'Scripter',
     'Viewer',
     
-    'Ui', 
+
     'Hotstrings',
     'Hotkeys',
     'RimLight',
@@ -242,17 +242,30 @@ mmmm_modules_to_import =[
     'FileTextureReloader',
     'HotBoxToggler',
     'DesignFileLoader',
-    'Downloader',
+    'Downloader',   
     ####'Threads',
     #'CapsDisabler', 
+    
+    
+    'UiDockable',## Ui and UiDockable should be last
+    'Ui', ## Ui and UiDockable should be last 
 ]
 importCode = """
 try:
-    reload(*module*)
+    *module*=*module*
+    ## if we get this far, then the module must exist, and we should reload it
+    try:
+        reload(*module*)
+    except:
+        ## in this case, the reload fails, so print the traceback
+        print( traceback.format_exc() )
+    
 except:
+    ## in this case, *module* has never been loaded before
     try:
         import *module*
     except:
+        ## in this case, the import fails, so print the traceback
         print( traceback.format_exc() )
 """
 for m in mmmm_modules_to_import:
@@ -359,8 +372,7 @@ class MmmmTools(object):
         
         self.commander = Commander.Commander(self)
         
-        
-        self.ui = Ui.Ui(self)
+        
         self.hotstrings = Hotstrings.Hotstrings(self)
         self.hotkeys = Hotkeys.Hotkeys(self)        self.selector = Selector.Selector(self)        self.rigger = Rigger.Rigger(self)
         self.modeler = Modeler.Modeler(self)
@@ -381,6 +393,9 @@ class MmmmTools(object):
             self.hotkeys.go()
         except:
             self.u.log( "Hotkeys could no be started." )
+            
+        self.uiDockable = UiDockable.UiDockable(self)
+        self.ui = Ui.Ui(self)  ## Very important that this comes last
         
         
     def getInput( self, message="Enter Input", title="Enter Input" ):
