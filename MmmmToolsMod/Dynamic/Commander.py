@@ -100,6 +100,7 @@ class Commander(object):
         
         self.addCommand( 'Commander/Hello', self.hello )
         self.addCommand( 'Commander/List', self.listCommands )
+        self.addCommand( 'Commander/ListMel', self.listMelCommands )
         self.addCommand( 'Commander/ReloadMmmmTools', self.reloadMmmmTools, uiLabel='Reload MmmmTools', inMenu='Developer' )
 
     def listCommands(self):

@@ -200,17 +200,18 @@ class MainMenu(object):
                 'Save Incrementally',
                 'Set Project By Pasting Or Typing',
                 'div',
-                'Activate Hotkey Manager',
-                'Save User Hotkeys',
-                'Restore Earlier Saved Hotkeys',
-                'div',
-                'Set Hotkeys To Factory Defaults',
-                'Set Hotkeys To User Defaults',
-                'div',
-                'Set Hotkeys To Polygons',
-                'Set Hotkeys To Rendering',
-                'Set Hotkeys To UVs',
-                'div',
+                #'Activate Hotkey Manager',
+                #'Save User Hotkeys',
+                #'Restore Earlier Saved Hotkeys',
+                #'div',
+                #'Set Hotkeys To Factory Defaults',
+                #'Set Hotkeys To User Defaults',
+                #'div',
+                #'Set Hotkeys To Polygons',
+                #'Set Hotkeys To Rendering',
+                #'Set Hotkeys To UVs',
+                #'div',
+                'Hotkeys Window...',
                 'Hotstring Window...',
                 'div',
                 'Menu Selector',                        
@@ -691,6 +692,8 @@ class MainMenu(object):
         elif state == 1:
             self.conf.mmmmToolsEnabled = state             
 
+    def menuHotkeysWindow(self, state=None):
+        self.mmmmTools.hotkeys.createUi()
     def menuHotstringWindow(self, state=None):
         self.mmmmTools.hotstrings.go()           
         

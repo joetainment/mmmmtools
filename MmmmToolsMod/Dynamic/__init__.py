@@ -232,7 +232,7 @@ mmmm_modules_to_import =[
     
 
     'Hotstrings',
-    'Hotkeys',
+    'HotkeysMod',
     'RimLight',
     'Renamer',
     'SelectTextureBorderEdges',
@@ -374,7 +374,7 @@ class MmmmTools(object):
         
         
         self.hotstrings = Hotstrings.Hotstrings(self)
-        self.hotkeys = Hotkeys.Hotkeys(self)        self.selector = Selector.Selector(self)        self.rigger = Rigger.Rigger(self)
+        self.hotkeys = HotkeysMod.Hotkeys(self)        self.selector = Selector.Selector(self)        self.rigger = Rigger.Rigger(self)
         self.modeler = Modeler.Modeler(self)
         self.texturer = Texturer.Texturer(self)
         self.renderer = Renderer.Renderer(self)
