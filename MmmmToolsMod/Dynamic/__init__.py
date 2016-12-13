@@ -242,7 +242,8 @@ mmmm_modules_to_import =[
     'FileTextureReloader',
     'HotBoxToggler',
     'DesignFileLoader',
-    'Downloader',   
+    'Downloader',
+    'MmmmBaker',    
     ####'Threads',
     #'CapsDisabler', 
     
