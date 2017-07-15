@@ -1,6 +1,2 @@
-class Reparenter(object):
-    
-    def setIntendedParentToCurrentParent(obj):
-        try:
-            parAttr = obj.mmmmRiggerIntendedParent
-            
+## Moved -   a proper reparenter will go into the
+## static MmmmTools classes
