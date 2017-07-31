@@ -26,6 +26,7 @@ import sys, os, shutil, thread, traceback
 import maya.cmds as cmds
 import maya.mel
 import pymel.all as pm
+import MmmmToolsMod
 
 import UtilsMod
 
@@ -306,6 +307,8 @@ class MainMenu(object):
                     'Renderer Disable Hypergraph Thumbnails',
                     'Renderer Expose MIP Shaders   Restart Required',
                     'Renderer Do Not Expose MIP Shaders   Restart Required',
+                    'Renderer Transfer Shading Sets By Space For Sel',
+                    'Renderer Transfer Shading Sets By Component For Sel',
                     ##  The following two lines are for future planned features
                     #'Create Occluded Ambient Light' )
                     #'Render Animation Interactively' )
@@ -616,7 +619,12 @@ class MainMenu(object):
     def menuRendererSetVRayTextureToSRGB(self, state ):
         self.mmmmTools.renderer.setVrayTextureToSRGB()
     def menuRendererSetVRayTextureToLinear(self, state ):
-        self.mmmmTools.renderer.setVrayTextureToLinear()    
+        self.mmmmTools.renderer.setVrayTextureToLinear()
+        
+    def menuRendererTransferShadingSetsByComponentForSel(self,state):
+        MmmmToolsMod.Static.ShadingEngine.transferShadingSetsByComponentForSel( )
+    def menuRendererTransferShadingSetsBySpaceForSel(self,state):
+        MmmmToolsMod.Static.ShadingEngine.transferShadingSetsBySpaceForSel( )
         
         
     def menuRiggerReplaceObjects(self, state=None):
